@@ -1,0 +1,18 @@
+<p>courier-form works!</p>
+<h2>Ajouter un Livreur</h2>
+
+<form (ngSubmit)="saveCourier()">
+
+  <label>Nom</label>
+  <input [(ngModel)]="courier.name" name="name" required />
+
+  <label>Téléphone</label>
+  <input [(ngModel)]="courier.phone" name="phone" required />
+
+  <label>
+    <input type="checkbox" [(ngModel)]="courier.available" name="available" />
+    Disponible
+  </label>
+
+  <button type="submit">Enregistrer</button>
+</form>

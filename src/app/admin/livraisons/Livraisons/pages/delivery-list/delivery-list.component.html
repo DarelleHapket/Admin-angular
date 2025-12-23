@@ -1,0 +1,38 @@
+<h2>Gestion des Livraisons</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Commande liée</th>
+      <th>Livreur</th>
+      <th>Date</th>
+      <th>Statut</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <!-- Boucle sur les livraisons -->
+    <tr *ngFor="let delivery of deliveries">
+      <td>{{ delivery.id }}</td>
+
+      <!-- Lien livraison ↔ commande -->
+      <td>Commande #{{ delivery.orderId }}</td>
+
+      <td>{{ delivery.courier }}</td>
+
+      <!-- Formatage de la date -->
+      <td>{{ delivery.date | date:'shortDate' }}</td>
+
+      <!-- Modification du statut -->
+      <td>
+        <select [(ngModel)]="delivery.status"
+                (change)="updateStatus(delivery)">
+          <option value="EN_COURS">En cours</option>
+          <option value="LIVREE">Livrée</option>
+          <option value="ECHEC">Échec</option>
+        </select>
+      </td>
+    </tr>
+  </tbody>
+</table>

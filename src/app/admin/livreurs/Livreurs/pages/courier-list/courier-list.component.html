@@ -1,0 +1,38 @@
+<h1>Gestion des Livreurs</h1>
+
+<!-- Bouton global : AJOUTER -->
+<button routerLink="/admin/couriers-form">
+   Ajouter un livreur
+</button>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Nom</th>
+    <th>Téléphone</th>
+    <th>Disponibilité</th>
+    <th>Actions</th>
+  </tr>
+
+  <!-- UNE ligne par livreur -->
+  <tr *ngFor="let courier of couriers">
+
+    <td>{{ courier.id }}</td>
+    <td>{{ courier.name }}</td>
+    <td>{{ courier.phone }}</td>
+
+    <!-- Disponibilité -->
+    <td>
+      <button (click)="toggleAvailability(courier)">
+        {{ courier.available ? 'Disponible' : 'Indisponible' }}
+      </button>
+    </td>
+
+    <!-- Actions CRUD -->
+    <td>
+      <button (click)="editCourier(courier)">Modifier</button>
+      <button (click)="deleteCourier(courier.id)">Supprimer</button>
+    </td>
+
+  </tr>
+</table>

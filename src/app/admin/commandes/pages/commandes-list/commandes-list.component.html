@@ -1,0 +1,54 @@
+<!-- Affichage de la liste des commandes avec tableau clair et actions -->
+<div class="page-container">
+  <h1 class="page-title">Gestion des Commandes</h1>
+
+  <!-- Filtres simples en haut du tableau -->
+  <div class="filters">
+    <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" placeholder="Filtrer par date">
+    <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+      <option value="">Tous les statuts</option>
+      <option value="Réservée">Réservée</option>
+      <option value="À livrer">À livrer</option>
+      <option value="Livrée">Livrée</option>
+      <option value="Échec">Échec</option>
+    </select>
+  </div>
+
+  <!-- Tableau responsive -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Client</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Boucle sur les commandes (filtrées ou non) -->
+      <tr *ngFor="let order of filteredOrders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.client }}</td>
+        <td>{{ order.date | date:'short' }}</td>
+        <td>{{ order.amount }} FCFA</td>
+        <td>
+          <!-- Select pour changer le statut directement -->
+          <select [(ngModel)]="order.status" (change)="updateStatus(order)">
+            <option value="Réservée">Réservée</option>
+            <option value="À livrer">À livrer</option>
+            <option value="Livrée">Livrée</option>
+            <option value="Échec">Échec</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn-primary" (click)="viewDetails(order)">Détails</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Message si aucune commande -->
+  <p *ngIf="filteredOrders.length === 0">Aucune commande trouvée.</p>
+</div>

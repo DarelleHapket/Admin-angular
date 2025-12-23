@@ -1,0 +1,150 @@
+<!-- ================= ÉTAT DE CHARGEMENT ================= -->
+<div *ngIf="loading" class="p-10 text-center text-gray-500 text-lg">
+  Chargement du rapport…
+</div>
+
+<!-- ================= RAPPORT ================= -->
+<div *ngIf="!loading" class="p-8 max-w-7xl mx-auto space-y-12 bg-gray-100">
+
+  <!-- ================= TITRE ================= -->
+  <div class="text-center">
+    <h1 class="text-4xl font-extrabold text-gray-800">
+      Rapport <span class="text-blue-600">d’Activité Logistique</span>
+    </h1>
+    <p class="text-gray-500 mt-2">
+      Généré le {{ today | date:'fullDate' }} à {{ today | date:'shortTime' }}
+    </p>
+  </div>
+
+  <!-- ================= STATS PRINCIPALES ================= -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-blue-600">
+      <p class="text-sm text-gray-500">Commandes totales</p>
+      <p class="text-3xl font-bold text-blue-600">{{ totalOrders }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-yellow-500">
+      <p class="text-sm text-gray-500">Commandes à livrer</p>
+      <p class="text-3xl font-bold text-yellow-600">{{ pendingOrders }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-green-600">
+      <p class="text-sm text-gray-500">Livraisons réussies</p>
+      <p class="text-3xl font-bold text-green-600">{{ successfulDeliveries }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-red-600">
+      <p class="text-sm text-gray-500">Livraisons échouées</p>
+      <p class="text-3xl font-bold text-red-600">{{ failedDeliveries }}</p>
+    </div>
+
+  </div>
+
+  <!-- ================= GRAPHIQUE + TAUX ================= -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Graphique -->
+    <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+        Activité <span class="text-blue-600">logistique (semaine)</span>
+      </h3>
+      <div class="h-96">
+        <canvas #activityChart></canvas>
+      </div>
+    </div>
+
+    <!-- Taux -->
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col justify-center items-center">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">
+        Taux de <span class="text-blue-600">réussite</span>
+      </h3>
+      <span class="text-6xl font-bold text-blue-600">
+        {{ successRate }}%
+      </span>
+    </div>
+
+  </div>
+
+  <!-- ================= STATS SECONDAIRES ================= -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <div class="bg-white rounded-lg shadow p-5 text-center">
+      <p class="text-sm text-gray-500">Livreurs actifs</p>
+      <p class="text-2xl font-bold text-gray-800">{{ activeCouriers }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5 text-center">
+      <p class="text-sm text-gray-500">Livraisons en cours</p>
+      <p class="text-2xl font-bold text-gray-800">{{ ongoingDeliveries }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5 text-center">
+      <p class="text-sm text-gray-500">Commandes annulées</p>
+      <p class="text-2xl font-bold text-red-600">{{ cancelledOrders }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5 text-center">
+      <p class="text-sm text-gray-500">Total aujourd’hui</p>
+      <p class="text-2xl font-bold text-blue-600">{{ todayTotal }}</p>
+    </div>
+
+  </div>
+
+  <!-- ================= TABLEAU ================= -->
+  <div>
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+      Tableau <span class="text-blue-600">récapitulatif</span>
+    </h2>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Indicateur</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Valeur</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Commentaire</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 text-sm">
+          <tr>
+            <td class="px-6 py-3 font-medium">Commandes totales</td>
+            <td class="px-6 py-3">{{ totalOrders }}</td>
+            <td class="px-6 py-3 text-gray-500">Toutes les commandes enregistrées</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-3 font-medium">Commandes à livrer</td>
+            <td class="px-6 py-3">{{ pendingOrders }}</td>
+            <td class="px-6 py-3 text-gray-500">En attente ou préparation</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-3 font-medium">Livraisons réussies</td>
+            <td class="px-6 py-3">{{ successfulDeliveries }}</td>
+            <td class="px-6 py-3 text-gray-500">Livrées avec succès</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-3 font-medium">Livraisons échouées</td>
+            <td class="px-6 py-3 text-red-600 font-semibold">{{ failedDeliveries }}</td>
+            <td class="px-6 py-3 text-gray-500">Problème de livraison</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= BOUTONS EXPORT ================= -->
+  <div class="flex justify-center gap-8 pt-6">
+    <button
+      (click)="exportPDF()"
+      class="btn btn-primary px-8 py-3 text-lg shadow">
+      Exporter PDF
+    </button>
+
+    <button
+      (click)="exportExcel()"
+      class="btn btn-success px-8 py-3 text-lg shadow">
+      Exporter Excel
+    </button>
+  </div>
+
+</div>
