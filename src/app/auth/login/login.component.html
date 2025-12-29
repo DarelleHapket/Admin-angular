@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="container">
+<div class="main">
+  <input type="checkbox" id="chk" aria-hidden="true">
+
+  <div class="signup">
+    <form>
+      <label for="chk" aria-hidden="true">Sign up</label>
+      <input type="text" placeholder="User name">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <button type="button">Sign up</button>
+    </form>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="login">
+    <form (ngSubmit)="login()">
+      <label for="chk" aria-hidden="true">Login</label>
+       <input type="email" placeholder="Email" [(ngModel)]="email" name="email"  required>
+       <input  type="password"  placeholder="Password" [(ngModel)]="password" name="password" required >
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</div>
+</div>

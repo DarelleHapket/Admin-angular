@@ -1,1 +1,14 @@
-<p>admin-layout works!</p>
+
+<div class="d-flex">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="flex-grow-1" style="margin-left: 250px;">
+    <app-admin-navbar></app-admin-navbar>
+
+    <div class="p-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</div>

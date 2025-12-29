@@ -1,0 +1,20 @@
+/* ================================
+   TAILWIND CSS
+   ================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================================
+   RÈGLES GLOBALES (OPTIONNEL)
+   ================================ */
+
+/* Fond global de l'application */
+body {
+  background-color: #f3f4f6; /* gris clair */
+}
+
+/* Amélioration lisibilité titres */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
