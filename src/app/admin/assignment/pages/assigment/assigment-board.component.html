@@ -1,1 +1,71 @@
-<p>ssigment-board works!</p>
+<div class="assignment-container">
+  <h1 class="page-title">Assignation des Commandes</h1>
+
+  <div class="assignment-grid">
+    <!-- ================= COLONNE GAUCHE : COMMANDES EN ATTENTE ================= -->
+    <div class="panel pending-panel">
+      <h2 class="panel-title">
+        Commandes en attente <span class="badge">{{ pendingOrders.length }}</span>
+      </h2>
+
+      <div class="orders-list">
+        <div *ngIf="pendingOrders.length === 0" class="empty-state">
+          Aucune commande en attente d’assignation
+        </div>
+
+        <div *ngFor="let order of pendingOrders" class="order-card">
+          <div class="order-header">
+            <strong>Commande #{{ order.id }}</strong>
+            <span class="order-amount">{{ order.amount | number:'1.0-0':'fr-FR' }} FCFA</span>
+          </div>
+          <p class="order-client">{{ order.client }}</p>
+          <p class="order-date">{{ order.date | date:'short' }}</p>
+
+          <div class="assign-section">
+            <select 
+              [(ngModel)]="order.selectedCourierId" 
+              class="courier-select"
+              (change)="assignOrder(order)">
+              <option value="">Choisir un livreur</option>
+              <option *ngFor="let courier of availableCouriers" [value]="courier.id">
+                {{ courier.name }} ({{ courier.phone }})
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= COLONNE DROITE : LIVREURS DISPONIBLES ================= -->
+    <div class="panel couriers-panel">
+      <h2 class="panel-title">
+        Livreurs disponibles <span class="badge green">{{ availableCouriers.length }}</span>
+      </h2>
+
+      <div class="couriers-list">
+        <div *ngIf="availableCouriers.length === 0" class="empty-state">
+          Aucun livreur disponible
+        </div>
+
+        <div *ngFor="let courier of availableCouriers" class="courier-card">
+          <div class="courier-info">
+            <strong>{{ courier.name }}</strong>
+            <p>{{ courier.phone }}</p>
+            <p class="courier-stats">
+              {{ courier.currentOrders }} commande(s) en cours
+            </p>
+          </div>
+
+          <div class="courier-status">
+            <button 
+              class="status-btn available"
+              [disabled]="!courier.available"
+              (click)="toggleCourierAvailability(courier)">
+              Disponible
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,8 @@ import { CourierService } from '../../../../../core/services/courier.service';
 
 @Component({
   selector: 'app-courier-list',
-  templateUrl: './courier-list.component.html'
+  templateUrl: './courier-list.component.html',
+  styleUrls:['./courier-list.component.css']
 })
 export class CourierListComponent implements OnInit {
 

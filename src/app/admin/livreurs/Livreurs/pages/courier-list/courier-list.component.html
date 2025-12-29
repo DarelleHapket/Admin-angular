@@ -1,38 +1,43 @@
-<h1>Gestion des Livreurs</h1>
+<div class="courier-container">
+  <h1 class="page-title">Gestion des Livreurs</h1>
 
-<!-- Bouton global : AJOUTER -->
-<button routerLink="/admin/couriers-form">
-   Ajouter un livreur
-</button>
+  <button class="add-btn" routerLink="/admin/couriers-form">
+    Ajouter un livreur
+  </button>
 
-<table>
-  <tr>
-    <th>ID</th>
-    <th>Nom</th>
-    <th>Téléphone</th>
-    <th>Disponibilité</th>
-    <th>Actions</th>
-  </tr>
+  <table class="courier-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Téléphone</th>
+        <th>Disponibilité</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
 
-  <!-- UNE ligne par livreur -->
-  <tr *ngFor="let courier of couriers">
+    <tbody>
+      <tr *ngIf="couriers.length === 0">
+        <td colspan="5" class="empty-row">Aucun livreur enregistré</td>
+      </tr>
 
-    <td>{{ courier.id }}</td>
-    <td>{{ courier.name }}</td>
-    <td>{{ courier.phone }}</td>
-
-    <!-- Disponibilité -->
-    <td>
-      <button (click)="toggleAvailability(courier)">
-        {{ courier.available ? 'Disponible' : 'Indisponible' }}
-      </button>
-    </td>
-
-    <!-- Actions CRUD -->
-    <td>
-      <button (click)="editCourier(courier)">Modifier</button>
-      <button (click)="deleteCourier(courier.id)">Supprimer</button>
-    </td>
-
-  </tr>
-</table>
+      <tr *ngFor="let courier of couriers" class="courier-row">
+        <td data-label="ID">{{ courier.id }}</td>
+        <td data-label="Nom">{{ courier.name }}</td>
+        <td data-label="Téléphone">{{ courier.phone }}</td>
+        <td data-label="Disponibilité">
+          <button 
+            class="availability-btn"
+            [class.available]="courier.available"
+            (click)="toggleAvailability(courier)">
+            {{ courier.available ? 'Disponible' : 'Indisponible' }}
+          </button>
+        </td>
+        <td data-label="Actions">
+          <button class="btn-edit" (click)="editCourier(courier)">Modifier</button>
+          <button class="btn-delete" (click)="deleteCourier(courier.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

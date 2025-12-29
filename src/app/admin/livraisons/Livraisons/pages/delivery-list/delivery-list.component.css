@@ -1,0 +1,143 @@
+.delivery-container {
+  padding: 2rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Tableau */
+.delivery-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.delivery-table thead {
+  background: #1e293b;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+.delivery-table th,
+.delivery-table td {
+  padding: 1.2rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.delivery-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.delivery-row {
+  transition: background 0.2s;
+}
+
+/* Lien vers commande */
+.link-order {
+  color: #3b82f6;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.link-order:hover {
+  color: #2563eb;
+}
+
+/* Badge statut */
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.status-EN_COURS {
+  background: #fffbeb;
+  color: #f59e0b;
+}
+
+.status-LIVREE {
+  background: #ecfdf5;
+  color: #10b981;
+}
+
+.status-ECHEC {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* Bouton modifier */
+.btn-edit {
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* Message vide */
+.empty-message {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .delivery-container { padding: 1rem; }
+  .page-title { font-size: 1.8rem; }
+
+  .delivery-table thead { display: none; }
+  .delivery-table, .delivery-table tbody, .delivery-table tr, .delivery-table td {
+    display: block;
+    width: 100%;
+  }
+  .delivery-table tr {
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .delivery-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border: none;
+  }
+  .delivery-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #475569;
+  }
+  .btn-edit { width: 100%; }
+}

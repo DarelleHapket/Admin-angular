@@ -1,38 +1,56 @@
-<h2>Gestion des Livraisons</h2>
+<div class="delivery-container">
+  <h2 class="page-title">Gestion des Livraisons</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Commande liée</th>
-      <th>Livreur</th>
-      <th>Date</th>
-      <th>Statut</th>
-    </tr>
-  </thead>
+  <!-- Tableau des livraisons -->
+  <table class="delivery-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Commande liée</th>
+        <th>Livreur</th>
+        <th>Date</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <!-- Boucle sur les livraisons -->
-    <tr *ngFor="let delivery of deliveries">
-      <td>{{ delivery.id }}</td>
+    <tbody>
+      <!-- Cas : aucune livraison -->
+      <tr *ngIf="deliveries.length === 0">
+        <td colspan="6" class="empty-message">
+          Aucune livraison enregistrée pour le moment.
+        </td>
+      </tr>
 
-      <!-- Lien livraison ↔ commande -->
-      <td>Commande #{{ delivery.orderId }}</td>
+      <!-- Boucle sur les livraisons -->
+      <tr *ngFor="let delivery of deliveries" class="delivery-row">
+        <td>{{ delivery.id }}</td>
 
-      <td>{{ delivery.courier }}</td>
+        <!-- Lien vers le détail de la commande -->
+        <td>
+          <a class="link-order" (click)="goToOrder(delivery.orderId)">
+            Commande #{{ delivery.orderId }}
+          </a>
+        </td>
 
-      <!-- Formatage de la date -->
-      <td>{{ delivery.date | date:'shortDate' }}</td>
+        <td>{{ delivery.courier || 'Non assigné' }}</td>
 
-      <!-- Modification du statut -->
-      <td>
-        <select [(ngModel)]="delivery.status"
-                (change)="updateStatus(delivery)">
-          <option value="EN_COURS">En cours</option>
-          <option value="LIVREE">Livrée</option>
-          <option value="ECHEC">Échec</option>
-        </select>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <td>{{ delivery.date | date:'short' }}</td>
+
+        <!-- Affichage du statut avec badge coloré -->
+        <td>
+          <span class="status-badge" [class]="getStatusClass(delivery.status)">
+            {{ getStatusLabel(delivery.status) }}
+          </span>
+        </td>
+
+        <!-- Bouton pour modifier le statut -->
+        <td>
+          <button class="btn-edit" (click)="openStatusEdit(delivery)">
+            Modifier statut
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
