@@ -1,0 +1,119 @@
+<!-- ================= PAGE LIVRAISONS ================= -->
+<div class="page-container">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">
+        <i class="fas fa-truck"></i> Gestion des <span class="text-primary">Livraisons</span>
+      </h1>
+      <p class="page-subtitle">
+        <i class="fas fa-info-circle"></i> {{ deliveries.length }} livraison(s) en cours de suivi
+      </p>
+    </div>
+    <button class="btn-primary">
+      <i class="fas fa-plus"></i> Nouvelle livraison
+    </button>
+  </div>
+
+  <!-- STATISTIQUES RAPIDES -->
+  <div class="quick-stats">
+    <div class="quick-stat-card stat-total">
+      <i class="fas fa-clipboard-list"></i>
+      <div>
+        <span class="stat-number">{{ deliveries.length }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+    </div>
+    <div class="quick-stat-card stat-progress">
+      <i class="fas fa-shipping-fast"></i>
+      <div>
+        <span class="stat-number">{{ getDeliveriesByStatus('EN_COURS').length }}</span>
+        <span class="stat-label">En cours</span>
+      </div>
+    </div>
+    <div class="quick-stat-card stat-delivered">
+      <i class="fas fa-check-double"></i>
+      <div>
+        <span class="stat-number">{{ getDeliveriesByStatus('LIVREE').length }}</span>
+        <span class="stat-label">Livrées</span>
+      </div>
+    </div>
+    <div class="quick-stat-card stat-failed">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div>
+        <span class="stat-number">{{ getDeliveriesByStatus('ECHEC').length }}</span>
+        <span class="stat-label">Échecs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLEAU -->
+  <div class="table-card">
+    <div class="table-responsive">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>#ID</th>
+            <th><i class="fas fa-shopping-bag"></i> Commande liée</th>
+            <th><i class="fas fa-user-tie"></i> Livreur</th>
+            <th><i class="fas fa-calendar"></i> Date</th>
+            <th><i class="fas fa-flag"></i> Statut</th>
+            <th><i class="fas fa-cog"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let delivery of deliveries" class="table-row">
+            <td class="id-cell">
+              <span class="id-badge">#{{ delivery.id }}</span>
+            </td>
+            <td>
+              <div class="order-link">
+                <i class="fas fa-link"></i>
+                <span>Commande #{{ delivery.orderId }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="courier-info">
+                <i class="fas fa-user-circle courier-icon"></i>
+                <span class="courier-name">{{ delivery.courier }}</span>
+              </div>
+            </td>
+            <td>{{ delivery.date | date:'d MMM yyyy' }}</td>
+            <td>
+              <select
+                [(ngModel)]="delivery.status"
+                (change)="updateStatus(delivery)"
+                [class]="'status-select status-' + delivery.status.toLowerCase()">
+                <option value="EN_COURS">En cours</option>
+                <option value="LIVREE">Livrée</option>
+                <option value="ECHEC">Échec</option>
+              </select>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-action btn-track" title="Suivre">
+                  <i class="fas fa-map-marker-alt"></i>
+                </button>
+                <button class="btn-action btn-view" title="Détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-edit" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Message si aucune livraison -->
+    <div *ngIf="deliveries.length === 0" class="empty-state">
+      <i class="fas fa-truck-loading"></i>
+      <p>Aucune livraison en cours</p>
+      <small>Les livraisons apparaîtront ici une fois créées</small>
+    </div>
+  </div>
+
+</div>

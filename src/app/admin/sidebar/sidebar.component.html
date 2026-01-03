@@ -1,0 +1,52 @@
+<div class="sidebar" [class.closed]="isCollapsed">
+
+  <!-- Logo / Titre -->
+  <div class="sidebar-header">
+    <h3 *ngIf="!isCollapsed">BUY MORE</h3>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Navigation -->
+  <a routerLink="/admin/dashboard" routerLinkActive="active">
+    <i class="fas fa-chart-pie"></i>
+    <span *ngIf="!isCollapsed">Dashboard</span>
+  </a>
+
+  <a routerLink="/admin/orders" routerLinkActive="active">
+    <i class="fas fa-shopping-cart"></i>
+    <span *ngIf="!isCollapsed">Commandes</span>
+  </a>
+
+  <a routerLink="/admin/deliveries" routerLinkActive="active">
+    <i class="fas fa-truck"></i>
+    <span *ngIf="!isCollapsed">Livraisons</span>
+  </a>
+
+
+ <a routerLink="/admin/assignment" routerLinkActive="active">
+    <i class="fas fa-shopping-cart"></i>
+  <span *ngIf="!isCollapsed">Assignation</span>
+</a>
+  <a routerLink="/admin/couriers" routerLinkActive="active">
+    <i class="fas fa-user"></i>
+    <span *ngIf="!isCollapsed">Livreurs</span>
+  </a>
+
+ <a routerLink="/admin/reports" routerLinkActive="active">
+  <i class="fas fa-file-alt"></i>
+  <span *ngIf="!isCollapsed">Reporting</span>
+</a>
+
+
+<!-- DÉCONNEXION (EN BAS) -->
+  <div class="sidebar-footer">
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span *ngIf="!isCollapsed">Déconnexion</span>
+    </button>
+  </div>
+
+</div>
+
