@@ -58,4 +58,20 @@ export class CommandesListComponent implements OnInit {
   viewDetails(order: Order): void {
     alert(`Détails de la commande ${order.id} (à développer)`);
   }
+
+  /**
+   * Obtenir les commandes par statut
+   */
+  getOrdersByStatus(status: string): Order[] {
+    return this.orders.filter(order => order.status === status);
+  }
+
+  /**
+   * Réinitialiser les filtres
+   */
+  resetFilters(): void {
+    this.filterDate = '';
+    this.filterStatus = '';
+    this.applyFilters();
+  }
 }

@@ -37,4 +37,11 @@ export class DeliveryListComponent implements OnInit {
   updateStatus(delivery: Delivery): void {
     this.deliveryService.updateStatus(delivery.id, delivery.status);
   }
+
+  /**
+   * Obtenir les livraisons par statut
+   */
+  getDeliveriesByStatus(status: string): Delivery[] {
+    return this.deliveries.filter(delivery => delivery.status === status);
+  }
 }

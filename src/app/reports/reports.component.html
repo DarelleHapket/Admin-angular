@@ -133,17 +133,15 @@
   </div>
 
   <!-- ================= BOUTONS EXPORT ================= -->
-  <div class="flex justify-center gap-8 pt-6">
-    <button
-      (click)="exportPDF()"
-      class="btn btn-primary px-8 py-3 text-lg shadow">
-      Exporter PDF
+  <div class="export-buttons">
+    <button (click)="exportPDF()" class="export-btn export-pdf">
+      <i class="fas fa-file-pdf"></i>
+      Exporter en PDF
     </button>
 
-    <button
-      (click)="exportExcel()"
-      class="btn btn-success px-8 py-3 text-lg shadow">
-      Exporter Excel
+    <button (click)="exportExcel()" class="export-btn export-excel">
+      <i class="fas fa-file-excel"></i>
+      Exporter en Excel
     </button>
   </div>
 

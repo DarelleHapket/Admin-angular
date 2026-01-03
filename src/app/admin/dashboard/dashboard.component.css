@@ -1,20 +1,519 @@
 /* ================================
-   TAILWIND CSS
+   VARIABLES DE COULEURS
    ================================ */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:host {
+  --color-primary: #3b82f6;
+  --color-secondary: #8b5cf6;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+  --color-info: #06b6d4;
 
-/* ================================
-   RÈGLES GLOBALES (OPTIONNEL)
-   ================================ */
+  --bg-light: #f8fafc;
+  --bg-white: #ffffff;
+  --text-dark: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
 
-/* Fond global de l'application */
-body {
-  background-color: #f3f4f6; /* gris clair */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-/* Amélioration lisibilité titres */
-h1, h2, h3 {
-  letter-spacing: -0.02em;
+/* ================================
+   CONTAINER PRINCIPAL
+   ================================ */
+.dashboard-container {
+  min-height: 100vh;
+  background: var(--bg-light);
+  padding: 2rem;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================
+   HEADER DU DASHBOARD
+   ================================ */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.page-title i {
+  color: var(--color-primary);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.header-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-white);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.header-date i {
+  color: var(--color-primary);
+}
+
+/* ================================
+   GRID DES STATS PRINCIPALES
+   ================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--bg-white);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
+}
+
+.stat-card-blue {
+  --card-color: #3b82f6;
+  --card-color-light: #60a5fa;
+}
+
+.stat-card-yellow {
+  --card-color: #eab308;
+  --card-color-light: #fbbf24;
+}
+
+.stat-card-green {
+  --card-color: #22c55e;
+  --card-color-light: #4ade80;
+}
+
+.stat-card-red {
+  --card-color: #ef4444;
+  --card-color-light: #f87171;
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  background: linear-gradient(135deg, var(--card-color) 0%, var(--card-color-light) 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--card-color);
+  margin: 0;
+  line-height: 1;
+}
+
+.stat-trend {
+  font-size: 0.875rem;
+  color: var(--color-success);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-trend-down {
+  color: var(--color-danger);
+}
+
+/* ================================
+   GRAPHIQUE ET TAUX DE RÉUSSITE
+   ================================ */
+.chart-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .chart-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: var(--bg-white);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.chart-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.chart-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-title i {
+  color: var(--color-primary);
+}
+
+.period-selector {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--bg-light);
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.period-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.period-btn:hover {
+  background: var(--bg-white);
+  color: var(--text-dark);
+}
+
+.period-btn.active {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-content {
+  padding: 1.5rem;
+  height: 320px;
+}
+
+/* TAUX DE RÉUSSITE */
+.success-rate-card {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.success-rate-card:hover {
+  transform: scale(1.02);
+}
+
+.success-rate-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.success-rate-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.success-rate-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.success-rate-value {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.success-rate-value .percent {
+  font-size: 2.5rem;
+  margin-left: 0.25rem;
+}
+
+.success-rate-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.success-rate-progress {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  transition: width 1s ease-out;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.success-rate-subtitle {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ================================
+   STATS SECONDAIRES
+   ================================ */
+.secondary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.secondary-stat-card {
+  background: var(--bg-white);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.secondary-stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateX(5px);
+}
+
+.secondary-stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.stat-icon-purple {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.stat-icon-orange {
+  background: linear-gradient(135deg, #f97316, #fb923c);
+}
+
+.stat-icon-red {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+.stat-icon-blue {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.secondary-stat-content {
+  flex: 1;
+}
+
+.secondary-stat-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.secondary-stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* ================================
+   LOADER
+   ================================ */
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light);
+}
+
+.spinner {
+  font-size: 4rem;
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}
+
+.spinner i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+  }
+
+  .success-rate-value {
+    font-size: 3rem;
+  }
+
+  .chart-content {
+    height: 250px;
+  }
 }

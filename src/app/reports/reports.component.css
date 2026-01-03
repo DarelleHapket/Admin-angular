@@ -1,0 +1,317 @@
+/* ================================
+   PAGE REPORTING - DESIGN MODERNE
+   ================================ */
+
+:host {
+  --primary-color: #3b82f6;
+  --success-color: #22c55e;
+  --warning-color: #eab308;
+  --danger-color: #ef4444;
+}
+
+/* Container principal */
+.p-10 {
+  padding: 2.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.space-y-12 > * + * {
+  margin-top: 3rem;
+}
+
+.bg-gray-100 {
+  background-color: #f8fafc;
+}
+
+/* Titre */
+.text-center {
+  text-align: center;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+.text-gray-800 {
+  color: #1e293b;
+}
+
+.text-blue-600 {
+  color: var(--primary-color);
+}
+
+.text-gray-500 {
+  color: #64748b;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+/* Grid de stats */
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+@media (min-width: 640px) {
+  .sm\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lg\\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .lg\\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+}
+
+/* Cartes de stats */
+.bg-white {
+  background-color: white;
+}
+
+.rounded-lg {
+  border-radius: 0.75rem;
+}
+
+.shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
+}
+
+.border-t-4 {
+  border-top-width: 4px;
+}
+
+.border-blue-600 {
+  border-top-color: var(--primary-color);
+}
+
+.border-yellow-500 {
+  border-top-color: var(--warning-color);
+}
+
+.border-green-600 {
+  border-top-color: var(--success-color);
+}
+
+.border-red-600 {
+  border-top-color: var(--danger-color);
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.text-6xl {
+  font-size: 3.75rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-yellow-600 {
+  color: #ca8a04;
+}
+
+.text-green-600 {
+  color: var(--success-color);
+}
+
+.text-red-600 {
+  color: var(--danger-color);
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+/* Graphique */
+.h-96 {
+  height: 24rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+/* Tableau */
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.min-w-full {
+  min-width: 100%;
+}
+
+.divide-y {
+  border-collapse: collapse;
+}
+
+.divide-gray-200 > * + * {
+  border-top: 1px solid #e5e7eb;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* Boutons export */
+.export-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.export-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.export-btn i {
+  font-size: 1.5rem;
+}
+
+.export-pdf {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+.export-pdf:hover {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+}
+
+.export-excel {
+  background: linear-gradient(135deg, #22c55e, #4ade80);
+}
+
+.export-excel:hover {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bg-white,
+.grid > * {
+  animation: fadeIn 0.4s ease;
+}

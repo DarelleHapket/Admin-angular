@@ -1,54 +1,142 @@
-<!-- Affichage de la liste des commandes avec tableau clair et actions -->
+<!-- ================= PAGE COMMANDES ================= -->
 <div class="page-container">
-  <h1 class="page-title">Gestion des Commandes</h1>
 
-  <!-- Filtres simples en haut du tableau -->
-  <div class="filters">
-    <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" placeholder="Filtrer par date">
-    <select [(ngModel)]="filterStatus" (change)="applyFilters()">
-      <option value="">Tous les statuts</option>
-      <option value="Réservée">Réservée</option>
-      <option value="À livrer">À livrer</option>
-      <option value="Livrée">Livrée</option>
-      <option value="Échec">Échec</option>
-    </select>
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">
+        <i class="fas fa-shopping-cart"></i> Gestion des <span class="text-primary">Commandes</span>
+      </h1>
+      <p class="page-subtitle">
+        <i class="fas fa-info-circle"></i> {{ filteredOrders.length }} commande(s) affichée(s)
+      </p>
+    </div>
+    <button class="btn-primary">
+      <i class="fas fa-plus"></i> Nouvelle commande
+    </button>
   </div>
 
-  <!-- Tableau responsive -->
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Client</th>
-        <th>Date</th>
-        <th>Montant</th>
-        <th>Statut</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Boucle sur les commandes (filtrées ou non) -->
-      <tr *ngFor="let order of filteredOrders">
-        <td>{{ order.id }}</td>
-        <td>{{ order.client }}</td>
-        <td>{{ order.date | date:'short' }}</td>
-        <td>{{ order.amount }} FCFA</td>
-        <td>
-          <!-- Select pour changer le statut directement -->
-          <select [(ngModel)]="order.status" (change)="updateStatus(order)">
-            <option value="Réservée">Réservée</option>
-            <option value="À livrer">À livrer</option>
-            <option value="Livrée">Livrée</option>
-            <option value="Échec">Échec</option>
-          </select>
-        </td>
-        <td>
-          <button class="btn-primary" (click)="viewDetails(order)">Détails</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- STATISTIQUES RAPIDES -->
+  <div class="quick-stats">
+    <div class="quick-stat-card stat-total">
+      <i class="fas fa-list"></i>
+      <div>
+        <span class="stat-number">{{ orders.length }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+    </div>
+    <div class="quick-stat-card stat-reserved">
+      <i class="fas fa-bookmark"></i>
+      <div>
+        <span class="stat-number">{{ getOrdersByStatus('RESERVE').length }}</span>
+        <span class="stat-label">Réservées</span>
+      </div>
+    </div>
+    <div class="quick-stat-card stat-pending">
+      <i class="fas fa-truck"></i>
+      <div>
+        <span class="stat-number">{{ getOrdersByStatus('A_LIVRER').length }}</span>
+        <span class="stat-label">À livrer</span>
+      </div>
+    </div>
+    <div class="quick-stat-card stat-delivered">
+      <i class="fas fa-check-circle"></i>
+      <div>
+        <span class="stat-number">{{ getOrdersByStatus('LIVREE').length }}</span>
+        <span class="stat-label">Livrées</span>
+      </div>
+    </div>
+  </div>
 
-  <!-- Message si aucune commande -->
-  <p *ngIf="filteredOrders.length === 0">Aucune commande trouvée.</p>
+  <!-- FILTRES -->
+  <div class="filters-card">
+    <div class="filter-group">
+      <label>
+        <i class="fas fa-calendar-alt"></i> Date
+      </label>
+      <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" class="filter-input">
+    </div>
+
+    <div class="filter-group">
+      <label>
+        <i class="fas fa-filter"></i> Statut
+      </label>
+      <select [(ngModel)]="filterStatus" (change)="applyFilters()" class="filter-select">
+        <option value="">Tous les statuts</option>
+        <option value="RESERVE">Réservée</option>
+        <option value="A_LIVRER">À livrer</option>
+        <option value="LIVREE">Livrée</option>
+        <option value="ECHEC">Échec</option>
+      </select>
+    </div>
+
+    <button class="btn-reset" (click)="resetFilters()">
+      <i class="fas fa-redo"></i> Réinitialiser
+    </button>
+  </div>
+
+  <!-- TABLEAU -->
+  <div class="table-card">
+    <div class="table-responsive">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>#ID</th>
+            <th><i class="fas fa-user"></i> Client</th>
+            <th><i class="fas fa-calendar"></i> Date</th>
+            <th><i class="fas fa-money-bill"></i> Montant</th>
+            <th><i class="fas fa-flag"></i> Statut</th>
+            <th><i class="fas fa-cog"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders" class="table-row">
+            <td class="id-cell">
+              <span class="id-badge">#{{ order.id }}</span>
+            </td>
+            <td>
+              <div class="client-info">
+                <i class="fas fa-user-circle client-icon"></i>
+                <span class="client-name">{{ order.client }}</span>
+              </div>
+            </td>
+            <td>{{ order.date | date:'d MMM yyyy' }}</td>
+            <td class="amount-cell">{{ order.amount | number:'1.0-0' }} FCFA</td>
+            <td>
+              <select
+                [(ngModel)]="order.status"
+                (change)="updateStatus(order)"
+                [class]="'status-select status-' + order.status.toLowerCase()">
+                <option value="RESERVE">Réservée</option>
+                <option value="A_LIVRER">À livrer</option>
+                <option value="LIVREE">Livrée</option>
+                <option value="ECHEC">Échec</option>
+              </select>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-action btn-view" (click)="viewDetails(order)" title="Voir détails">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-edit" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-action btn-delete" title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Message si aucune commande -->
+    <div *ngIf="filteredOrders.length === 0" class="empty-state">
+      <i class="fas fa-inbox"></i>
+      <p>Aucune commande trouvée</p>
+      <small>Essayez de modifier vos filtres</small>
+    </div>
+  </div>
+
 </div>

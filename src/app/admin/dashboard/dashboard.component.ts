@@ -14,9 +14,12 @@ import { Chart } from 'chart.js/auto';
 export class DashboardComponent implements OnInit {
 
   // etat de chargement
-  // Au chargement du dashboard, on affiche “Chargement…”
-  // Quand les données sont prêtes, le dashboard s’affiche
+  // Au chargement du dashboard, on affiche "Chargement…"
+  // Quand les données sont prêtes, le dashboard s'affiche
   loading = true;
+
+  // Date actuelle pour affichage
+  today = new Date();
 
   // statistiques
   totalOrders = 0;
