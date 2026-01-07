@@ -1,0 +1,102 @@
+<div class="assignment-container">
+  <h1 class="page-title">Assignation des commandes</h1>
+
+  <div class="assignment-grid">
+
+    <!-- PANEL COMMANDES -->
+    <div class="panel pending-panel">
+      <h2 class="panel-title">
+        Commandes en attente
+        <span class="badge">{{ pendingOrders.length }}</span>
+      </h2>
+
+      <!-- Chargement -->
+      <div class="loading" *ngIf="isLoading">
+        <p>Chargement...</p>
+      </div>
+
+      <!-- Aucune commande -->
+      <div class="empty-state" *ngIf="!isLoading && pendingOrders.length === 0">
+        <p>Aucune commande à assigner pour le moment.</p>
+      </div>
+
+      <!-- Liste des commandes -->
+      <div class="orders-list">
+        <div *ngFor="let order of pendingOrders" class="order-card">
+
+          <div class="order-header">
+            <strong>Commande #{{ order.id }}</strong>
+            <span class="client">
+              Client : {{ order.client || '—' }}
+            </span>
+          </div>
+
+          <div class="order-details">
+            <p>
+              <strong>Date :</strong>
+              {{ order.created_at | date:'short' }}
+            </p>
+
+            <p>
+              <strong>Montant :</strong>
+              {{ order.total_amount | number:'1.0-0' }} FCFA
+            </p>
+
+            <p>
+              <strong>Statut :</strong>
+              <span class="status">
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </p>
+          </div>
+
+          <!-- Assignation -->
+          <div class="assign-section">
+            <select
+              [(ngModel)]="order.selectedCourierId"
+              class="courier-select"
+              required>
+              <option [ngValue]="null" disabled>
+                Choisir un livreur
+              </option>
+
+              <option
+                *ngFor="let courier of availableCouriers"
+                [ngValue]="courier.id">
+                {{ courier.name }}
+                <span *ngIf="courier.phone">({{ courier.phone }})</span>
+              </option>
+            </select>
+
+            <button
+              class="assign-btn"
+              [disabled]="!order.selectedCourierId"
+              (click)="assign(order.id, order.selectedCourierId)">
+              Assigner
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL LIVREURS -->
+    <div class="panel couriers-panel">
+      <h2 class="panel-title">
+        Livreurs disponibles
+        <span class="badge green">{{ availableCouriers.length }}</span>
+      </h2>
+
+      <div class="couriers-list">
+        <div *ngFor="let courier of availableCouriers" class="courier-card">
+          <strong>{{ courier.name }}</strong>
+          <p class="email">{{ courier.email }}</p>
+          <p class="phone" *ngIf="courier.phone">
+            {{ courier.phone }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

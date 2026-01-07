@@ -35,7 +35,7 @@
         <td>{{ order.amount }} FCFA</td>
         <td>
           <!-- Select pour changer le statut directement -->
-          <select [(ngModel)]="order.status" (change)="updateStatus(order)">
+          <select [(ngModel)]="order.statut" (change)="updateStatus(order)">
             <option value="Réservée">Réservée</option>
             <option value="À livrer">À livrer</option>
             <option value="Livrée">Livrée</option>
