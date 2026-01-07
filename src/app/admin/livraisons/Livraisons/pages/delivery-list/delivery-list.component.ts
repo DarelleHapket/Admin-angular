@@ -37,4 +37,22 @@ export class DeliveryListComponent implements OnInit {
   updateStatus(delivery: Delivery): void {
     this.deliveryService.updateStatus(delivery.id, delivery.status);
   }
+
+  /* ===================== AJOUTS POUR LE TEMPLATE ===================== */
+
+  goToOrder(orderId: number): void {
+    console.log('Navigation vers la commande', orderId);
+  }
+
+  getStatusClass(status: string): string {
+    return 'status-' + status;
+  }
+
+  getStatusLabel(status: string): string {
+    return status;
+  }
+
+  openStatusEdit(delivery: Delivery): void {
+    console.log('Ouverture édition statut', delivery);
+  }
 }

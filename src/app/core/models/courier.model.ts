@@ -1,6 +1,7 @@
-export interface couriers{
-    id: number;
-    name: string;
-    phone : string;
-    available: boolean;//disponibilite du livreur
+export interface couriers {
+   id: number;
+  name: string;
+  email: string;
+  created_at?: string;
+  updated_at?: string;
 }

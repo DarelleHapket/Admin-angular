@@ -8,7 +8,7 @@ import { AdminRoutingModule } from './admin-routing.module';
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule   // ⬅️ INDISPENSABLE
+    AdminRoutingModule   //
   ]
 })
 export class AdminModule {}

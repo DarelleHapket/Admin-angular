@@ -1,33 +1,29 @@
-// Injectable permet à Angular d’injecter ce guard dans le routing
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, CanActivateChild, Router } from '@angular/router';
 
 @Injectable({
-  // Le guard est disponible dans toute l’application
   providedIn: 'root'
 })
+export class AuthGuard implements CanActivate, CanActivateChild {
 
-export class AuthGuard implements CanActivate {
-
-  // On injecte le Router pour pouvoir rediriger
   constructor(private router: Router) {}
 
-  // à chaque tentative d’accès à une route protégée
-  canActivate(): boolean {
+  private checkAuth(): boolean {
+    const token = localStorage.getItem('token');
 
-    // On lit l’état de connexion depuis le localStorage
-    // Si isLoggedIn === 'true' → utilisateur connecté
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    if (isLoggedIn) {
+    if (token && token.length > 10) {
       return true;
     }
 
-    //  utilisateur NON connecté
-    //  redirection vers la page de login
     this.router.navigate(['/login']);
-
-    // Refuse l’accès à la route
     return false;
+  }
+
+  canActivate(): boolean {
+    return this.checkAuth();
+  }
+
+  canActivateChild(): boolean {
+    return this.checkAuth();
   }
 }

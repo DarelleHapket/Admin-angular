@@ -13,7 +13,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { CourierListComponent } from './admin/livreurs/Livreurs/pages/courier-list/courier-list.component';
 import { DeliveryListComponent } from './admin/livraisons/Livraisons/pages/delivery-list/delivery-list.component';
 import { CourierFormComponent } from './admin/livreurs/Livreurs/pages/courier-form/courier-form.component';
-import { AssigmentBoardComponent } from './admin/assignment/pages/assigment/assigment-board.component';
+import { AssignmentBoardComponent } from './admin/assignment/pages/assignment/assignment-board.component';
 
 
 export const routes: Routes = [
@@ -48,12 +48,13 @@ export const routes: Routes = [
           import('./admin/livreurs/livreurs.module')
             .then(m => m.LivreursModule)
       },
-      {
-        path: 'assignment',
-        loadChildren: () =>
-          import('./admin/assignment/assignment.module')
-            .then(m => m.AssignmentModule)
-      }
+    {
+  path: 'assignment',
+  loadComponent: () =>
+    import('./admin/assignment/pages/assignment/assignment-board.component')
+      .then(c => c.AssignmentBoardComponent)
+}
+
     ]
   },
 

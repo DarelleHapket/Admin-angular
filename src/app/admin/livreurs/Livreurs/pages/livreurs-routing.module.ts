@@ -6,9 +6,11 @@ import { CourierFormComponent } from './courier-form/courier-form.component';
 const routes: Routes = [
   {
     path: '',
-    component: CourierListComponent
+    component: CourierListComponent},
     // /admin/couriers
+      { path: 'create', component: CourierFormComponent 
   },
+  
   {
     path: 'new',
     component: CourierFormComponent

@@ -2,40 +2,33 @@
   <h1 class="page-title">Gestion des Livreurs</h1>
 
   <button class="add-btn" routerLink="/admin/couriers-form">
-    Ajouter un livreur
-  </button>
+  Créer un livreur
+</button>
+
 
   <table class="courier-table">
     <thead>
       <tr>
         <th>ID</th>
         <th>Nom</th>
-        <th>Téléphone</th>
-        <th>Disponibilité</th>
-        <th>Actions</th>
+        <th>Email</th>
+        <th>Créé le</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngIf="couriers.length === 0">
-        <td colspan="5" class="empty-row">Aucun livreur enregistré</td>
+        <td colspan="4" class="empty-row">
+          Aucun livreur enregistré
+        </td>
       </tr>
 
       <tr *ngFor="let courier of couriers" class="courier-row">
         <td data-label="ID">{{ courier.id }}</td>
         <td data-label="Nom">{{ courier.name }}</td>
-        <td data-label="Téléphone">{{ courier.phone }}</td>
-        <td data-label="Disponibilité">
-          <button 
-            class="availability-btn"
-            [class.available]="courier.available"
-            (click)="toggleAvailability(courier)">
-            {{ courier.available ? 'Disponible' : 'Indisponible' }}
-          </button>
-        </td>
-        <td data-label="Actions">
-          <button class="btn-edit" (click)="editCourier(courier)">Modifier</button>
-          <button class="btn-delete" (click)="deleteCourier(courier.id)">Supprimer</button>
+        <td data-label="Email">{{ courier.email }}</td>
+        <td data-label="Créé le">
+          {{ courier.created_at | date:'dd/MM/yyyy HH:mm' }}
         </td>
       </tr>
     </tbody>

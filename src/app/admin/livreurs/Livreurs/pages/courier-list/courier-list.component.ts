@@ -4,46 +4,36 @@ import { CourierService } from '../../../../../core/services/courier.service';
 
 @Component({
   selector: 'app-courier-list',
-  templateUrl: './courier-list.component.html'
+  templateUrl: './courier-list.component.html',
+  styleUrls: ['./courier-list.component.css']
 })
 export class CourierListComponent implements OnInit {
 
-  // Tableau affiché dans le HTML
   couriers: couriers[] = [];
+  loading = false;
+  errorMessage = '';
 
-  // Injection du service
   constructor(private courierService: CourierService) {}
 
-  // Appelé automatiquement au chargement du composant
   ngOnInit(): void {
-
-    // On récupère les livreurs depuis le service
-    this.couriers = this.courierService.getCouriers();
+    this.loadCouriers();
   }
 
-  // Bouton SUPPRIMER
-  deleteCourier(id: number) {
+  loadCouriers(): void {
+    this.loading = true;
+    this.errorMessage = '';
 
-    // Appel de la logique métier
-    this.courierService.deleteCourier(id);
-  }
-
-  // Bouton MODIFIER
-  editCourier(courier: couriers) {
-
-    // Exemple simple (plus tard → vrai formulaire)
-    const newName = prompt('Nouveau nom', courier.name);
-
-    if (newName) {
-      courier.name = newName;
-      this.courierService.updateCourier(courier);
-    }
-  }
-
-  // Bouton DISPONIBILITÉ
-  toggleAvailability(courier: couriers) {
-
-    // Change disponible ↔ indisponible
-    this.courierService.toggleAvailability(courier);
+    this.courierService.getCouriers().subscribe({
+      next: (data) => {
+        console.log('Livreurs reçus :', data); // 🔍 DEBUG IMPORTANT
+        this.couriers = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Erreur lors du chargement des livreurs';
+        this.loading = false;
+      }
+    });
   }
 }
