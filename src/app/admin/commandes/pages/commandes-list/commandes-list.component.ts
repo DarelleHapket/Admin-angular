@@ -106,16 +106,18 @@ export class CommandesListComponent implements OnInit {
   updateCourier(order: Order): void {
     const courierId = order.livreur_id; // peut être null
 
-    this.courierService.assignOrder(order.id, { id: courierId }).subscribe({
+    this.courierService.assignOrder(order.id, { livreur_id: courierId }).subscribe({
       next: () => {
         console.log('Livreur mis à jour avec succès');
         // Met à jour l'objet livreur complet si nécessaire
         const selectedCourier = this.livreur.find(c => c.id === courierId);
         order.livreur = selectedCourier || null;
+        // location.reload() 
       },
       error: err => {
         console.error('Erreur mise à jour livreur', err);
         // Optionnel : revert la sélection en cas d'erreur
+        // location.reload() 
       }
     });
   }

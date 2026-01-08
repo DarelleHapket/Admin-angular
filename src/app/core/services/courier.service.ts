@@ -40,7 +40,7 @@ export class CourierService {
 
   /** assigner une commande */
   assignOrder(id_order: number, payload: {
-    id: number;
+    livreur_id: number;
   }): Observable<couriers> {
     return this.http
       .post<ApiResponse<couriers>>(api_url.livreurs.assignOrder(id_order), payload)
