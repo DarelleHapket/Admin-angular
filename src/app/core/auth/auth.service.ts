@@ -19,7 +19,7 @@ export class AuthService {
 
   private baseUrl = 'https://tp4buymore-production.up.railway.app';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -62,5 +62,8 @@ export class AuthService {
       // Si on n'a pas de token, on log l'erreur pour debugging
       console.error('Aucun token trouvé dans la réponse:', response);
     }
+
+    const all_categories = response?.data?.all_categories
+    localStorage.setItem('all_categories', JSON.stringify(all_categories || []));
   }
 }

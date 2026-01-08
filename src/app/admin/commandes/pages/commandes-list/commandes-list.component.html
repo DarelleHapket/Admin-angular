@@ -3,18 +3,13 @@
 
   <!-- Filtres -->
   <div class="filters">
-    <input
-      type="date"
-      [(ngModel)]="filterDate"
-      (change)="applyFilters()"
-    >
+    <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()">
 
     <select [(ngModel)]="filterStatus" (change)="applyFilters()">
       <option value="">Tous les statuts</option>
-      <option value="RESERVE">Réservée</option>
-      <option value="A_LIVRER">À livrer</option>
-      <option value="LIVREE">Livrée</option>
-      <option value="ECHEC">Échec</option>
+      <option *ngFor="let entry of statusEntries" [value]="entry.key">
+        {{ entry.value }}
+      </option>
     </select>
   </div>
 
@@ -26,6 +21,7 @@
         <th>Client</th>
         <th>Date</th>
         <th>Montant</th>
+        <th>Livreur</th>
         <th>Statut</th>
         <th>Action</th>
       </tr>
@@ -33,21 +29,31 @@
 
     <tbody>
       <tr *ngIf="filteredOrders.length === 0">
-        <td colspan="6">Aucune commande trouvée</td>
+        <td colspan="7">Aucune commande trouvée</td>
       </tr>
 
       <tr *ngFor="let order of filteredOrders">
         <td>{{ order.id }}</td>
-        <td>{{ order.client || '—' }}</td>
-        <td>{{ order.created_at | date:'short' }}</td>
+        <td>{{ order.cart?.user?.name || '—' }}</td>
+        <td>{{ formatOrderDate(order) | date:'short' }}</td>
         <td>{{ order.total_amount }} FCFA</td>
 
+        <!-- Colonne Livreur -->
+        <td>
+          <select [(ngModel)]="order.livreur_id" (change)="updateCourier(order)" [disabled]="!livreur.length">
+            <option [ngValue]="null">Aucun livreur</option>
+            <option *ngFor="let c of livreur" [ngValue]="c.id">
+              {{ c.name }}
+            </option>
+          </select>
+        </td>
+
+        <!-- Colonne Statut -->
         <td>
           <select [(ngModel)]="order.status" (change)="updateStatus(order)">
-            <option value="RESERVE">Réservée</option>
-            <option value="A_LIVRER">À livrer</option>
-            <option value="LIVREE">Livrée</option>
-            <option value="ECHEC">Échec</option>
+            <option *ngFor="let entry of statusEntries" [value]="entry.key">
+              {{ entry.value }}
+            </option>
           </select>
         </td>
 

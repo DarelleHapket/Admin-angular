@@ -9,6 +9,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router) {}
 
   private checkAuth(): boolean {
+    
+    if (typeof window === 'undefined') return false;
     const token = localStorage.getItem('token');
 
     if (token && token.length > 10) {

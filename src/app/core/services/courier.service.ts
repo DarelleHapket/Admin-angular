@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { couriers } from '../models/courier.model';
+import { api_url } from '../../helpers/api';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -13,19 +14,17 @@ interface ApiResponse<T> {
 })
 export class CourierService {
 
-  private baseUrl =
-    'https://tp4buymore-production.up.railway.app/api/admin/livreurs';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  /** 🔹 Tous les livreurs */
+  /**   Tous les livreurs */
   getCouriers(): Observable<couriers[]> {
     return this.http
-      .get<ApiResponse<couriers[]>>(this.baseUrl)
+      .get<ApiResponse<couriers[]>>(api_url.livreurs.getAll)
       .pipe(map(res => res.data));
   }
 
-  /** 🔹 Créer un livreur */
+  /**   Créer un livreur */
   createCourier(payload: {
     first_name: string;
     last_name: string;
@@ -35,7 +34,16 @@ export class CourierService {
     password_confirmation: string;
   }): Observable<couriers> {
     return this.http
-      .post<ApiResponse<couriers>>(this.baseUrl, payload)
+      .post<ApiResponse<couriers>>(api_url.livreurs.add, payload)
+      .pipe(map(res => res.data));
+  }
+
+  /** assigner une commande */
+  assignOrder(id_order: number, payload: {
+    id: number;
+  }): Observable<couriers> {
+    return this.http
+      .post<ApiResponse<couriers>>(api_url.livreurs.assignOrder(id_order), payload)
       .pipe(map(res => res.data));
   }
 }

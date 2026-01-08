@@ -14,6 +14,11 @@
     <span *ngIf="!isCollapsed">Dashboard</span>
   </a>
 
+  <a routerLink="/admin/products" routerLinkActive="active">
+    <i class="fas fa-shopping-cart"></i>
+    <span *ngIf="!isCollapsed">produits</span>
+  </a>
+
   <a routerLink="/admin/orders" routerLinkActive="active">
     <i class="fas fa-shopping-cart"></i>
     <span *ngIf="!isCollapsed">Commandes</span>

@@ -1,0 +1,185 @@
+/* Conteneur principal */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Titre */
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Formulaire global */
+form {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Labels */
+.form-label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+/* Inputs et textarea */
+.form-control,
+.form-check-input {
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-check-input:focus {
+  border-color: #4e73df;
+  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+  outline: none;
+}
+
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Checkboxes inline */
+.form-check-inline {
+  margin-right: 1.5rem;
+}
+
+.form-check-label {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Bouton fichier */
+input[type="file"] {
+  padding: 0.5rem;
+}
+
+/* Aperçu des images */
+.row.mb-3 h5 {
+  color: #555;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.col-md-3 {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.col-md-3:hover {
+  transform: translateY(-4px);
+}
+
+.img-thumbnail {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.img-thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Bouton supprimer image */
+.btn-danger.btn-sm {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 50px;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+}
+
+.btn-danger.btn-sm:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Bouton principal */
+.btn-primary {
+  background: linear-gradient(135deg, #4e73df, #224abe);
+  border: none;
+  padding: 0.85rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+}
+
+.btn-primary:disabled {
+  background: #a0a0a0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  form {
+    padding: 1.5rem;
+  }
+
+  .row > .col-md-4 {
+    margin-bottom: 1rem;
+  }
+
+  .col-md-3 {
+    margin-bottom: 1.5rem;
+  }
+
+  .img-thumbnail {
+    height: 150px;
+  }
+}
+
+/* Animation douce au chargement */
+form {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Message d'erreur (optionnel si tu ajoutes des validations visibles) */
+.text-danger {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}

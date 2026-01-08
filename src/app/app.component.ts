@@ -1,16 +1,22 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { LoaderComponent } from './components/loader.component';
+import { ToastContainerComponent } from './components/toast-container.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    LoaderComponent,
+    ToastContainerComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'admin-angular';
-   testLocalStorage() {
+  testLocalStorage() {
     console.log('=== TEST LocalStorage ===');
     localStorage.setItem('test', 'valeur de test');
     console.log('test:', localStorage.getItem('test'));

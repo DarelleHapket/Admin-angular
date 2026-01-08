@@ -1,17 +1,18 @@
-// src/app/core/models/order.models.ts
+import { OrderStatus } from "../types";
+import { couriers } from "./courier.model";
 
 export interface Order {
   id: number;
   client?: string;
   created_at: string;
   total_amount: number;
-  status:
-    | 'pending'
-    | 'paid'
-    | 'processing'
-    | 'shipped'
-    | 'delivered'
-    | 'cancelled'
-    | 'failed'
-    | 'in_transit';
+  cart: {
+    user: {
+      name: string
+    }
+  },
+  status: OrderStatus,
+  qr_code_url: string;
+  livreur?: couriers | null;         
+  livreur_id?: number | null;      
 }

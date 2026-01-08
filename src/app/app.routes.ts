@@ -31,6 +31,30 @@ export const routes: Routes = [
 
       // 🔥 ON NE MET PLUS DE COMPOSANTS ICI 🔥
       {
+        path: 'products',
+        loadComponent: () =>
+          import('./components/products-list/products-list.component') // ← chemin vers ta liste
+            .then(c => c.ProductListComponent)
+      },
+      {
+        path: 'products/add',
+        loadComponent: () =>
+          import('./components/products-add/create-product.component')
+            .then(c => c.CreateProductComponent)
+      },
+      // {
+      //   path: 'products/:id',
+      //   loadComponent: () =>
+      //     import('./admin/products/pages/product-detail/product-detail.component')
+      //       .then(c => c.ProductDetailComponent)
+      // },
+      // {
+      //   path: 'products/:id/edit',
+      //   loadComponent: () =>
+      //     import('./admin/products/pages/product-edit/product-edit.component')
+      //       .then(c => c.ProductEditComponent)
+      // },
+      {
         path: 'orders',
         loadChildren: () =>
           import('./admin/commandes/commandes.module')
@@ -42,18 +66,20 @@ export const routes: Routes = [
           import('./admin/livraisons/livraisons.module')
             .then(m => m.LivraisonsModule)
       },
+
       {
-        path: 'couriers',
-        loadChildren: () =>
-          import('./admin/livreurs/livreurs.module')
-            .then(m => m.LivreursModule)
-      },
+    path: 'couriers',
+    loadChildren: () =>
+      import('./admin/livreurs/livreurs.module')
+        .then(m => m.LivreursModule)
+    },
     {
-  path: 'assignment',
-  loadComponent: () =>
-    import('./admin/assignment/pages/assignment/assignment-board.component')
-      .then(c => c.AssignmentBoardComponent)
-}
+      path: 'assignment',
+      loadComponent: () =>
+        import('./admin/assignment/pages/assignment/assignment-board.component')
+          .then(c => c.AssignmentBoardComponent)
+    }     
+       
 
     ]
   },

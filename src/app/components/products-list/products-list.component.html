@@ -1,0 +1,93 @@
+
+<div class="container">
+  <div class="header">
+    <h1>Liste des produits</h1>
+    <button mat-raised-button color="primary" routerLink="/admin/products/add">
+      <!-- <mat-icon>add</mat-icon> -->
+      Ajouter un produit
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des produits...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error" *ngIf="error">
+    <p>{{ error }}</p>
+    <button mat-button color="primary" (click)="loadProducts()">Réessayer</button>
+  </div>
+
+  <!-- Table -->
+  <mat-card *ngIf="!loading && !error" class="table-card">
+    <mat-table [dataSource]="products" class="mat-elevation-z2">
+
+      <!-- Colonne Image -->
+      <ng-container matColumnDef="image">
+        <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
+        <mat-cell *matCellDef="let product">
+          <img
+            [src]="getMainImage(product)"
+            [alt]="product.name"
+            class="product-image"
+            
+          />
+        </mat-cell>
+      </ng-container>
+
+      <!-- Colonne Nom -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
+        <mat-cell *matCellDef="let product"> {{ product.name }} </mat-cell>
+      </ng-container>
+
+      <!-- Colonne Prix -->
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef> Prix </mat-header-cell>
+        <mat-cell *matCellDef="let product"> {{ product.price | currency:'XAF':'symbol':'1.0-0' }} </mat-cell>
+      </ng-container>
+
+      <!-- Colonne Quantité -->
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef> Stock </mat-header-cell>
+        <mat-cell *matCellDef="let product">
+          <span [class.low-stock]="product.quantity < 10">
+            {{ product.quantity }}
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Colonne Actif -->
+      <ng-container matColumnDef="is_active">
+        <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+        <mat-cell *matCellDef="let product">
+          <span class="status" [class.active]="product.is_active" [class.inactive]="!product.is_active">
+            {{ product.is_active ? 'Actif' : 'Inactif' }}
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Colonne Rating -->
+      <ng-container matColumnDef="rating">
+        <mat-header-cell *matHeaderCellDef> Note </mat-header-cell>
+        <mat-cell *matCellDef="let product">
+          {{ product.rating }}/5 ⭐
+        </mat-cell>
+      </ng-container>
+ 
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <!-- Message si vide -->
+    <div class="empty-state" *ngIf="products.length === 0">
+      <p>Aucun produit trouvé.</p>
+      <button mat-raised-button color="primary" routerLink="/products/add">
+        Ajouter le premier produit
+      </button>
+    </div>
+  </mat-card>
+</div>
