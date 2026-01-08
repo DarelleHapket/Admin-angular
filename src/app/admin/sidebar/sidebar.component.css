@@ -1,0 +1,152 @@
+/* ================================
+   SIDEBAR – THEME & VARIABLES
+   ================================ */
+
+
+   /* Contenu principal */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar {
+  /* Variables locales (FIABLE en Angular) */
+  --sidebar-bg-start: #0f0c29;
+  --sidebar-bg-middle: #302b63;
+  --sidebar-bg-end: #24243e;
+
+  --sidebar-hover: #2e2a5f;
+  --accent: #ffffff;        /* blanc pour logo & actif */
+  --text-light: #ffffff;    /* texte principal */
+  --text-muted: #dcdcff;    /* texte secondaire */
+
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background: linear-gradient(
+    to bottom,
+    var(--sidebar-bg-start),
+    var(--sidebar-bg-middle),
+    var(--sidebar-bg-end)
+  );
+
+  transition: width 0.3s ease;
+  color: var(--text-light);
+  z-index: 1000;
+
+  display: flex;
+flex-direction: column;
+
+}
+
+/* ================================
+   SIDEBAR FERMÉE
+   ================================ */
+.sidebar.closed {
+  width: 70px;
+}
+
+/* ================================
+   HEADER (LOGO + TOGGLE)
+   ================================ */
+.sidebar-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  color: var(--accent);     /* BLANC */
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* ================================
+   BOUTON TOGGLE
+   ================================ */
+.toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.toggle-btn:hover {
+  opacity: 0.85;
+}
+
+/* ================================
+   LIENS DE NAVIGATION
+   ================================ */
+.sidebar a {
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+  color: var(--text-light);   /* TEXTE BLANC */
+  opacity: 0.85;
+
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+/* Icônes */
+.sidebar a i {
+  min-width: 30px;
+  font-size: 18px;
+  color: var(--text-light);   /* ICÔNES BLANCHES */
+}
+
+/* Hover */
+.sidebar a:hover {
+  background-color: var(--sidebar-hover);
+  opacity: 1;
+}
+
+/* ================================
+   LIEN ACTIF
+   ================================ */
+.sidebar a.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--accent);
+  opacity: 1;
+  font-weight: 500;
+}
+
+
+
+/* Footer */
+
+
+
+
+.sidebar-footer {
+  margin-top: auto; /* POUSSE EN BAS */
+  padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Bouton logout */
+.logout-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.logout-btn:hover {
+  opacity: 1;
+  background-color: var(--sidebar-hover);
+}

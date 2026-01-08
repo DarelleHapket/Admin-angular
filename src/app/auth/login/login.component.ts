@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,26 +12,48 @@ import { FormsModule } from '@angular/forms';
 })
 export class LoginComponent {
 
-  email: string = '';
-  password: string = '';
+  email = '';
+  password = '';
+  errorMessage = '';
+  loading = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  // function login
   login() {
-    console.log('Login cliqué', this.email, this.password);
-
     if (!this.email || !this.password) {
-      alert('Veuillez remplir tous les champs');
+      this.errorMessage = 'Veuillez remplir tous les champs';
       return;
     }
 
-    // Simulation de login
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userEmail', this.email);
+    this.loading = true;
+    this.errorMessage = '';
 
-    console.log('LocalStorage OK');
-    this.router.navigate(['/admin/dashboard']);// redirection vers le dashboard admin
+    this.authService.login({
+      email: this.email,
+      password: this.password
+    }).subscribe({
+      next: (response) => {
+        // ✅ Sauvegarde du VRAI token JWT
+        this.authService.saveAuthData(response);
+
+        // 🔐 Vérification stricte
+        const token = localStorage.getItem('token');
+        if (token) {
+          this.router.navigate(['/admin/dashboard']);
+        } else {
+          this.errorMessage = 'Identifiants incorrects';
+        }
+
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Email ou mot de passe incorrect';
+        this.loading = false;
+      }
+    });
   }
 
   logout() {

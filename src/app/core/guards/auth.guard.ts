@@ -1,33 +1,39 @@
-// Injectable permet à Angular d’injecter ce guard dans le routing
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { CanActivate, CanActivateChild, Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-  // Le guard est disponible dans toute l’application
   providedIn: 'root'
 })
+export class AuthGuard implements CanActivate, CanActivateChild {
 
-export class AuthGuard implements CanActivate {
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  // On injecte le Router pour pouvoir rediriger
-  constructor(private router: Router) {}
-
-  // à chaque tentative d’accès à une route protégée
-  canActivate(): boolean {
-
-    // On lit l’état de connexion depuis le localStorage
-    // Si isLoggedIn === 'true' → utilisateur connecté
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    if (isLoggedIn) {
+  private checkAuth(): boolean {
+    // Vérifier si nous sommes dans un navigateur (pas en SSR)
+    if (!isPlatformBrowser(this.platformId)) {
+      // En SSR, autoriser l'accès temporairement (sera re-vérifié côté client)
       return true;
     }
 
-    //  utilisateur NON connecté
-    //  redirection vers la page de login
-    this.router.navigate(['/login']);
+    const token = localStorage.getItem('token');
 
-    // Refuse l’accès à la route
+    if (token && token.length > 10) {
+      return true;
+    }
+
+    this.router.navigate(['/login']);
     return false;
+  }
+
+  canActivate(): boolean {
+    return this.checkAuth();
+  }
+
+  canActivateChild(): boolean {
+    return this.checkAuth();
   }
 }

@@ -1,0 +1,104 @@
+<div class="detail-page">
+  <!-- En-tête -->
+  <div class="header">
+    <button class="btn-back" (click)="goBack()">Retour</button>
+    <h1>Commande #{{ order?.numero || '...' }}</h1>
+    <span class="status" [class]="'status-' + (order?.statut | lowercase) || 'reservee'">
+      {{ order?.statut || 'Chargement...' }}
+    </span>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="quick-actions">
+    <button class="btn btn-livree" 
+            (click)="updateStatus('Livrée')" 
+            [disabled]="order?.statut === 'Livrée'">
+      Marquer Livrée
+    </button>
+    <button class="btn btn-echec" 
+            (click)="updateStatus('Échec')" 
+            [disabled]="order?.statut === 'Échec'">
+      Marquer Échec
+    </button>
+  </div>
+
+  <!-- Cartes d'informations -->
+  <div class="cards">
+
+    <!-- Client -->
+    <div class="card">
+      <h3>Client</h3>
+      <p><strong>Nom :</strong> {{ order?.client?.nom || '-' }}</p>
+      <p><strong>Tél :</strong> {{ order?.client?.telephone || '-' }}</p>
+      <p><strong>Email :</strong> {{ order?.client?.email || 'Non renseigné' }}</p>
+    </div>
+
+    <!-- Adresse -->
+    <div class="card">
+      <h3>Adresse de livraison</h3>
+      <p class="address">{{ order?.adresseLivraison || '-' }}</p>
+      <p *ngIf="order?.zone"><strong>Zone :</strong> {{ order?.zone }}</p>
+    </div>
+
+    <!-- Infos commande -->
+    <div class="card">
+      <h3>Commande</h3>
+      <p><strong>Date :</strong> {{ order?.date | date:'dd/MM/yyyy HH:mm' }}</p>
+      <p><strong>Montant :</strong> <strong class="price">{{ order?.montant | number }} FCFA</strong></p>
+      <p><strong>Paiement :</strong> {{ order?.paiement || 'Non précisé' }}</p>
+    </div>
+
+    <!-- Livreur -->
+    <div class="card livreur-card" [class.no-livreur]="!order?.livreur">
+      <h3>Livreur</h3>
+      <div *ngIf="order?.livreur; else assignBlock">
+        <p><strong>{{ order.livreur.nom }}</strong></p>
+        <p>Tél : {{ order.livreur.telephone }}</p>
+        <button class="btn btn-danger btn-small" (click)="unassignLivreur()">
+          Retirer le livreur
+        </button>
+      </div>
+      <ng-template #assignBlock>
+        <p class="no-data">Aucun livreur assigné</p>
+        <button class="btn btn-primary" (click)="openAssignLivreurDialog()">
+          Assigner un livreur
+        </button>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Tableau des articles -->
+  <div class="section">
+    <h2>Articles commandés</h2>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th class="center">Qté</th>
+          <th class="right">Prix unitaire</th>
+          <th class="right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of order?.articles">
+          <td>{{ item.produit }}</td>
+          <td class="center">{{ item.quantite }}</td>
+          <td class="right">{{ item.prix | number }} FCFA</td>
+          <td class="right"><strong>{{ item.quantite * item.prix | number }} FCFA</strong></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"><strong>Total commande</strong></td>
+          <td class="right total"><strong>{{ order?.montant | number }} FCFA</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Notes -->
+  <div class="section" *ngIf="order?.notes">
+    <h2>Notes / Commentaires</h2>
+    <div class="notes-box">{{ order.notes }}</div>
+  </div>
+</div>

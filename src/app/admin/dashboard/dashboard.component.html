@@ -1,3 +1,227 @@
-<h1>Dashboard Admin</h1>
-<p>Bienvenue sur le panneau d'administration</p>
-<button (click)="logout()">Déconnexion</button>
+<!-- ================= DASHBOARD ADMIN ================= -->
+<div *ngIf="!loading" class="dashboard-container">
+
+  <!-- ================= HEADER ================= -->
+  <div class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">
+        <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        Tableau de bord
+      </h1>
+      <p class="dashboard-subtitle">
+        Vue d'ensemble de votre activité logistique en temps réel
+      </p>
+    </div>
+    <div class="dashboard-date">
+      {{ currentDate | date:'EEEE d MMMM y':'':'fr-FR' }}
+    </div>
+  </div>
+
+  <!-- ================= STATS PRINCIPALES ================= -->
+  <div class="stats-grid">
+
+    <!-- Commandes totales -->
+    <div class="stat-card stat-card-blue">
+      <div class="stat-icon-wrapper stat-icon-blue">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Commandes totales</p>
+        <p class="stat-value">{{ totalOrders }}</p>
+        <p class="stat-trend stat-trend-up">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+          </svg>
+          <span>+12% ce mois</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Commandes à livrer -->
+    <div class="stat-card stat-card-orange">
+      <div class="stat-icon-wrapper stat-icon-orange">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">En attente de livraison</p>
+        <p class="stat-value">{{ pendingOrders }}</p>
+        <p class="stat-trend stat-trend-neutral">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd" />
+          </svg>
+          <span>{{ pendingOrders }} à traiter</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Livraisons réussies -->
+    <div class="stat-card stat-card-green">
+      <div class="stat-icon-wrapper stat-icon-green">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Livraisons réussies</p>
+        <p class="stat-value">{{ successfulDeliveries }}</p>
+        <p class="stat-trend stat-trend-up">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+          </svg>
+          <span>+8% cette semaine</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Livraisons échouées -->
+    <div class="stat-card stat-card-red">
+      <div class="stat-icon-wrapper stat-icon-red">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Livraisons échouées</p>
+        <p class="stat-value">{{ failedDeliveries }}</p>
+        <p class="stat-trend stat-trend-down">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z" clip-rule="evenodd" />
+          </svg>
+          <span>-3% ce mois</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= GRAPHIQUE ET TAUX DE RÉUSSITE ================= -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+
+    <!-- Graphique -->
+    <div class="lg:col-span-2 chart-card">
+      <div class="chart-header">
+        <div>
+          <h3 class="chart-title">Activité logistique</h3>
+          <p class="chart-subtitle">Vue d'ensemble des commandes et livraisons</p>
+        </div>
+
+        <!-- Sélecteur période -->
+        <div class="period-selector">
+          <button
+            type="button"
+            class="period-btn"
+            [class.period-btn-active]="period === 'week'"
+            (click)="changePeriod('week')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Semaine
+          </button>
+          <button
+            type="button"
+            class="period-btn"
+            [class.period-btn-active]="period === 'month'"
+            (click)="changePeriod('month')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Mois
+          </button>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas #activityChart></canvas>
+      </div>
+    </div>
+
+    <!-- Taux de réussite et stats rapides -->
+    <div class="success-rate-container">
+      <!-- Taux de réussite -->
+      <div class="success-rate-card">
+        <div class="success-rate-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <p class="success-rate-label">Taux de réussite global</p>
+        <div class="success-rate-value-wrapper">
+          <span class="success-rate-value">{{ successRate }}</span>
+          <span class="success-rate-percent">%</span>
+        </div>
+        <div class="success-rate-bar">
+          <div class="success-rate-fill" [style.width.%]="successRate"></div>
+        </div>
+        <p class="success-rate-info">
+          {{ successfulDeliveries }} livraisons sur {{ successfulDeliveries + failedDeliveries }}
+        </p>
+      </div>
+
+      <!-- Stats rapides -->
+      <div class="quick-stats">
+        <div class="quick-stat-item">
+          <div class="quick-stat-icon quick-stat-icon-purple">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <div>
+            <p class="quick-stat-value">{{ activeCouriers }}</p>
+            <p class="quick-stat-label">Livreurs actifs</p>
+          </div>
+        </div>
+
+        <div class="quick-stat-item">
+          <div class="quick-stat-icon quick-stat-icon-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+            </svg>
+          </div>
+          <div>
+            <p class="quick-stat-value">{{ ongoingDeliveries }}</p>
+            <p class="quick-stat-label">Livraisons en cours</p>
+          </div>
+        </div>
+
+        <div class="quick-stat-item">
+          <div class="quick-stat-icon quick-stat-icon-gray">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <div>
+            <p class="quick-stat-value">{{ cancelledOrders }}</p>
+            <p class="quick-stat-label">Commandes annulées</p>
+          </div>
+        </div>
+
+        <div class="quick-stat-item">
+          <div class="quick-stat-icon quick-stat-icon-indigo">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <p class="quick-stat-value">{{ todayTotal }}</p>
+            <p class="quick-stat-label">Commandes aujourd'hui</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= CHARGEMENT ================= -->
+<div *ngIf="loading" class="loading-container">
+  <div class="loading-spinner"></div>
+  <p class="loading-text">Chargement du tableau de bord...</p>
+</div>
