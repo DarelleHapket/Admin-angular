@@ -1,62 +1,191 @@
 <div class="page-container">
-  <h1 class="page-title">Gestion des Commandes</h1>
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">
+        <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        Gestion des Commandes
+      </h1>
+      <p class="page-subtitle">{{ filteredOrders.length }} commande(s) trouvée(s)</p>
+    </div>
+  </div>
+
+  <!-- Stats rapides -->
+  <div class="quick-stats-grid">
+    <div class="stat-mini stat-mini-blue">
+      <div class="stat-mini-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+      </div>
+      <div>
+        <p class="stat-mini-value">{{ orders.length }}</p>
+        <p class="stat-mini-label">Total commandes</p>
+      </div>
+    </div>
+
+    <div class="stat-mini stat-mini-orange">
+      <div class="stat-mini-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <p class="stat-mini-value">{{ getStatusCount('processing') }}</p>
+        <p class="stat-mini-label">À livrer</p>
+      </div>
+    </div>
+
+    <div class="stat-mini stat-mini-green">
+      <div class="stat-mini-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <p class="stat-mini-value">{{ getStatusCount('delivered') }}</p>
+        <p class="stat-mini-label">Livrées</p>
+      </div>
+    </div>
+
+    <div class="stat-mini stat-mini-red">
+      <div class="stat-mini-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <p class="stat-mini-value">{{ getStatusCount('failed') }}</p>
+        <p class="stat-mini-label">Échouées</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Filtres -->
-  <div class="filters">
-    <input
-      type="date"
-      [(ngModel)]="filterDate"
-      (change)="applyFilters()"
-    >
+  <div class="filters-card">
+    <div class="filters-header">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      </svg>
+      <span>Filtres</span>
+    </div>
+    <div class="filters">
+      <div class="filter-group">
+        <label>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Date
+        </label>
+        <input
+          type="date"
+          [(ngModel)]="filterDate"
+          (change)="applyFilters()"
+          class="filter-input"
+        >
+      </div>
 
-    <select [(ngModel)]="filterStatus" (change)="applyFilters()">
-      <option value="">Tous les statuts</option>
-      <option value="RESERVE">Réservée</option>
-      <option value="A_LIVRER">À livrer</option>
-      <option value="LIVREE">Livrée</option>
-      <option value="ECHEC">Échec</option>
-    </select>
+      <div class="filter-group">
+        <label>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+          </svg>
+          Statut
+        </label>
+        <select [(ngModel)]="filterStatus" (change)="applyFilters()" class="filter-select">
+          <option value="">Tous les statuts</option>
+          <option value="pending">En attente</option>
+          <option value="processing">En traitement</option>
+          <option value="delivered">Livrée</option>
+          <option value="failed">Échouée</option>
+          <option value="cancelled">Annulée</option>
+        </select>
+      </div>
+
+      <button class="filter-reset" (click)="resetFilters()" *ngIf="filterDate || filterStatus">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        Réinitialiser
+      </button>
+    </div>
   </div>
 
   <!-- Tableau -->
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Client</th>
-        <th>Date</th>
-        <th>Montant</th>
-        <th>Statut</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <div class="table-card">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Date de création</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-    <tbody>
-      <tr *ngIf="filteredOrders.length === 0">
-        <td colspan="6">Aucune commande trouvée</td>
-      </tr>
+        <tbody>
+          <tr *ngIf="filteredOrders.length === 0" class="empty-row">
+            <td colspan="6">
+              <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <p>Aucune commande trouvée</p>
+              </div>
+            </td>
+          </tr>
 
-      <tr *ngFor="let order of filteredOrders">
-        <td>{{ order.id }}</td>
-        <td>{{ order.client || '—' }}</td>
-        <td>{{ order.created_at | date:'short' }}</td>
-        <td>{{ order.total_amount }} FCFA</td>
+          <tr *ngFor="let order of filteredOrders; let i = index" [style.animation-delay]="(i * 0.05) + 's'">
+            <td data-label="ID">
+              <span class="order-id">#{{ order.id }}</span>
+            </td>
+            <td data-label="Client">
+              <div class="client-cell">
+                <div class="client-avatar">{{ getInitials(order.client) }}</div>
+                <span>{{ order.client || 'Client inconnu' }}</span>
+              </div>
+            </td>
+            <td data-label="Date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td data-label="Montant">
+              <span class="amount">{{ order.total_amount | number:'1.0-0' }} FCFA</span>
+            </td>
 
-        <td>
-          <select [(ngModel)]="order.status" (change)="updateStatus(order)">
-            <option value="RESERVE">Réservée</option>
-            <option value="A_LIVRER">À livrer</option>
-            <option value="LIVREE">Livrée</option>
-            <option value="ECHEC">Échec</option>
-          </select>
-        </td>
+            <td data-label="Statut">
+              <select
+                [(ngModel)]="order.status"
+                (change)="updateStatus(order)"
+                class="status-select"
+                [class.status-pending]="order.status === 'pending'"
+                [class.status-processing]="order.status === 'processing'"
+                [class.status-delivered]="order.status === 'delivered'"
+                [class.status-failed]="order.status === 'failed'"
+                [class.status-cancelled]="order.status === 'cancelled'">
+                <option value="pending">En attente</option>
+                <option value="processing">En traitement</option>
+                <option value="delivered">Livrée</option>
+                <option value="failed">Échouée</option>
+                <option value="cancelled">Annulée</option>
+              </select>
+            </td>
 
-        <td>
-          <button class="btn-primary" (click)="viewDetails(order)">
-            Détails
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            <td data-label="Action">
+              <button class="btn-details" (click)="viewDetails(order)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                Détails
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

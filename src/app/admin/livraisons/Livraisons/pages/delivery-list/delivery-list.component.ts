@@ -55,4 +55,19 @@ export class DeliveryListComponent implements OnInit {
   openStatusEdit(delivery: Delivery): void {
     console.log('Ouverture édition statut', delivery);
   }
+
+  /** Compte le nombre de livraisons par statut */
+  getStatusCount(status: string): number {
+    return this.deliveries.filter(d => d.status === status).length;
+  }
+
+  /** Obtenir les initiales du livreur */
+  getCourierInitials(courierName: string | undefined): string {
+    if (!courierName || courierName === 'Non assigné') return '?';
+    const names = courierName.split(' ');
+    if (names.length >= 2) {
+      return (names[0][0] + names[1][0]).toUpperCase();
+    }
+    return courierName.substring(0, 2).toUpperCase();
+  }
 }

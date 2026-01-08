@@ -14,13 +14,14 @@ import { Courier } from '../../../../core/models/assignment.model';
     FormsModule // ✅ AJOUT CRUCIAL
   ],
   templateUrl: './assignment-board.component.html',
-  styleUrls: ['./assignment-board.component.scss']
+  styleUrls: ['./assignment-board.component.css']
 })
 export class AssignmentBoardComponent implements OnInit {
 
   pendingOrders: (Order & { selectedCourierId?: number })[] = [];
   availableCouriers: Courier[] = [];
   isLoading = false;
+  todayAssignments = 8; // Valeur fixe pour éviter le changement à chaque rendu
 
   constructor(private assignmentService: AssignmentService) {}
 
@@ -38,7 +39,6 @@ export class AssignmentBoardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erreur chargement commandes', err);
-        alert('Erreur lors du chargement des commandes');
         this.isLoading = false;
       }
     });
@@ -62,7 +62,6 @@ export class AssignmentBoardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erreur assignation', err);
-        alert('Impossible d’assigner cette commande');
       }
     });
   }
@@ -77,5 +76,19 @@ export class AssignmentBoardComponent implements OnInit {
       failed: 'Échec'
     };
     return map[status] || status;
+  }
+
+  getTodayAssignments(): number {
+    // Retourne la valeur fixe stockée dans la propriété
+    return this.todayAssignments;
+  }
+
+  getCourierInitials(courier: Courier): string {
+    if (!courier.name) return '??';
+    const names = courier.name.split(' ');
+    if (names.length >= 2) {
+      return (names[0][0] + names[1][0]).toUpperCase();
+    }
+    return courier.name.substring(0, 2).toUpperCase();
   }
 }

@@ -8,9 +8,10 @@
 
 // le garder
 
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +20,16 @@ export class AuthService {
 
   private baseUrl = 'https://tp4buymore-production.up.railway.app';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   // LOGIN SIMPLE → email + password
@@ -38,6 +45,10 @@ export class AuthService {
   //  SAUVEGARDE DU TOKEN
   // Sauvegarde les infos d'authentification après un login réussi
   saveAuthData(response: any) {
+    // Vérifier si on est dans un navigateur
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
 
     // 1) Vérifie que la réponse contient bien un token
     //    Ton backend renvoie le token ici : response.data.token

@@ -1,150 +1,249 @@
-<!-- ================= ÉTAT DE CHARGEMENT ================= -->
-<div *ngIf="loading" class="p-10 text-center text-gray-500 text-lg">
-  Chargement du rapport…
-</div>
+<div class="page-container">
 
-<!-- ================= RAPPORT ================= -->
-<div *ngIf="!loading" class="p-8 max-w-7xl mx-auto space-y-12 bg-gray-100">
-
-  <!-- ================= TITRE ================= -->
-  <div class="text-center">
-    <h1 class="text-4xl font-extrabold text-gray-800">
-      Rapport <span class="text-blue-600">d’Activité Logistique</span>
-    </h1>
-    <p class="text-gray-500 mt-2">
-      Généré le {{ today | date:'fullDate' }} à {{ today | date:'shortTime' }}
-    </p>
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">
+        <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Rapport d'Activité Logistique
+      </h1>
+      <p class="page-subtitle">Généré le {{ today | date:'fullDate':'':'fr-FR' }} à {{ today | date:'shortTime':'':'fr-FR' }}</p>
+    </div>
   </div>
 
-  <!-- ================= STATS PRINCIPALES ================= -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-blue-600">
-      <p class="text-sm text-gray-500">Commandes totales</p>
-      <p class="text-3xl font-bold text-blue-600">{{ totalOrders }}</p>
-    </div>
-
-    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-yellow-500">
-      <p class="text-sm text-gray-500">Commandes à livrer</p>
-      <p class="text-3xl font-bold text-yellow-600">{{ pendingOrders }}</p>
-    </div>
-
-    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-green-600">
-      <p class="text-sm text-gray-500">Livraisons réussies</p>
-      <p class="text-3xl font-bold text-green-600">{{ successfulDeliveries }}</p>
-    </div>
-
-    <div class="bg-white rounded-lg shadow p-6 text-center border-t-4 border-red-600">
-      <p class="text-sm text-gray-500">Livraisons échouées</p>
-      <p class="text-3xl font-bold text-red-600">{{ failedDeliveries }}</p>
-    </div>
-
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement du rapport...</p>
   </div>
 
-  <!-- ================= GRAPHIQUE + TAUX ================= -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Content -->
+  <div *ngIf="!loading">
 
-    <!-- Graphique -->
-    <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">
-        Activité <span class="text-blue-600">logistique (semaine)</span>
-      </h3>
-      <div class="h-96">
-        <canvas #activityChart></canvas>
+    <!-- Stats principales -->
+    <div class="stats-grid">
+      <div class="stat-card stat-blue">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-value">{{ totalOrders }}</p>
+          <p class="stat-label">Commandes totales</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-yellow">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-value">{{ pendingOrders }}</p>
+          <p class="stat-label">Commandes à livrer</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-green">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-value">{{ successfulDeliveries }}</p>
+          <p class="stat-label">Livraisons réussies</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-red">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-value">{{ failedDeliveries }}</p>
+          <p class="stat-label">Livraisons échouées</p>
+        </div>
       </div>
     </div>
 
-    <!-- Taux -->
-    <div class="bg-white rounded-lg shadow p-6 flex flex-col justify-center items-center">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">
-        Taux de <span class="text-blue-600">réussite</span>
-      </h3>
-      <span class="text-6xl font-bold text-blue-600">
-        {{ successRate }}%
-      </span>
+    <!-- Graphique + Taux -->
+    <div class="chart-section">
+      <!-- Chart Card -->
+      <div class="chart-card">
+        <h3 class="chart-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          Activité logistique (semaine)
+        </h3>
+        <div class="chart-container">
+          <canvas #activityChart></canvas>
+        </div>
+      </div>
+
+      <!-- Success Rate Card -->
+      <div class="success-card">
+        <h3 class="success-title">Taux de réussite</h3>
+        <div class="success-circle">
+          <svg class="success-ring" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#e5e7eb" stroke-width="12" />
+            <circle
+              cx="100"
+              cy="100"
+              r="90"
+              fill="none"
+              stroke="url(#gradient)"
+              stroke-width="12"
+              stroke-linecap="round"
+              [attr.stroke-dasharray]="565.48"
+              [attr.stroke-dashoffset]="565.48 - (565.48 * successRate / 100)"
+              transform="rotate(-90 100 100)"
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="success-value">{{ successRate }}%</div>
+        </div>
+        <p class="success-description">
+          {{ successfulDeliveries }} livraisons réussies sur {{ totalOrders }} commandes
+        </p>
+      </div>
     </div>
 
-  </div>
+    <!-- Stats secondaires -->
+    <div class="stats-secondary-grid">
+      <div class="stat-secondary">
+        <div class="stat-secondary-icon stat-purple">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-secondary-value">{{ activeCouriers }}</p>
+          <p class="stat-secondary-label">Livreurs actifs</p>
+        </div>
+      </div>
 
-  <!-- ================= STATS SECONDAIRES ================= -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="stat-secondary">
+        <div class="stat-secondary-icon stat-orange">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-secondary-value">{{ ongoingDeliveries }}</p>
+          <p class="stat-secondary-label">Livraisons en cours</p>
+        </div>
+      </div>
 
-    <div class="bg-white rounded-lg shadow p-5 text-center">
-      <p class="text-sm text-gray-500">Livreurs actifs</p>
-      <p class="text-2xl font-bold text-gray-800">{{ activeCouriers }}</p>
+      <div class="stat-secondary">
+        <div class="stat-secondary-icon stat-red">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-secondary-value">{{ cancelledOrders }}</p>
+          <p class="stat-secondary-label">Commandes annulées</p>
+        </div>
+      </div>
+
+      <div class="stat-secondary">
+        <div class="stat-secondary-icon stat-blue">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="stat-secondary-value">{{ todayTotal }} FCFA</p>
+          <p class="stat-secondary-label">Total aujourd'hui</p>
+        </div>
+      </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-5 text-center">
-      <p class="text-sm text-gray-500">Livraisons en cours</p>
-      <p class="text-2xl font-bold text-gray-800">{{ ongoingDeliveries }}</p>
+    <!-- Table récapitulative -->
+    <div class="table-card">
+      <h2 class="table-title">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+        Tableau récapitulatif
+      </h2>
+
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Indicateur</th>
+              <th>Valeur</th>
+              <th>Commentaire</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-semibold">Commandes totales</td>
+              <td class="text-blue-600 font-bold">{{ totalOrders }}</td>
+              <td class="text-gray-500">Toutes les commandes enregistrées</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Commandes à livrer</td>
+              <td class="text-yellow-600 font-bold">{{ pendingOrders }}</td>
+              <td class="text-gray-500">En attente ou préparation</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Livraisons réussies</td>
+              <td class="text-green-600 font-bold">{{ successfulDeliveries }}</td>
+              <td class="text-gray-500">Livrées avec succès</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Livraisons échouées</td>
+              <td class="text-red-600 font-bold">{{ failedDeliveries }}</td>
+              <td class="text-gray-500">Problème de livraison</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Taux de réussite</td>
+              <td class="text-green-600 font-bold">{{ successRate }}%</td>
+              <td class="text-gray-500">Ratio livraisons réussies</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Livreurs actifs</td>
+              <td class="font-bold">{{ activeCouriers }}</td>
+              <td class="text-gray-500">Livreurs disponibles</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-5 text-center">
-      <p class="text-sm text-gray-500">Commandes annulées</p>
-      <p class="text-2xl font-bold text-red-600">{{ cancelledOrders }}</p>
+    <!-- Export buttons -->
+    <div class="export-section">
+      <button class="export-btn export-pdf" (click)="exportPDF()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        Exporter en PDF
+      </button>
+
+      <button class="export-btn export-excel" (click)="exportExcel()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Exporter en Excel
+      </button>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-5 text-center">
-      <p class="text-sm text-gray-500">Total aujourd’hui</p>
-      <p class="text-2xl font-bold text-blue-600">{{ todayTotal }}</p>
-    </div>
-
-  </div>
-
-  <!-- ================= TABLEAU ================= -->
-  <div>
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
-      Tableau <span class="text-blue-600">récapitulatif</span>
-    </h2>
-
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Indicateur</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Valeur</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Commentaire</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 text-sm">
-          <tr>
-            <td class="px-6 py-3 font-medium">Commandes totales</td>
-            <td class="px-6 py-3">{{ totalOrders }}</td>
-            <td class="px-6 py-3 text-gray-500">Toutes les commandes enregistrées</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-3 font-medium">Commandes à livrer</td>
-            <td class="px-6 py-3">{{ pendingOrders }}</td>
-            <td class="px-6 py-3 text-gray-500">En attente ou préparation</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-3 font-medium">Livraisons réussies</td>
-            <td class="px-6 py-3">{{ successfulDeliveries }}</td>
-            <td class="px-6 py-3 text-gray-500">Livrées avec succès</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-3 font-medium">Livraisons échouées</td>
-            <td class="px-6 py-3 text-red-600 font-semibold">{{ failedDeliveries }}</td>
-            <td class="px-6 py-3 text-gray-500">Problème de livraison</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ================= BOUTONS EXPORT ================= -->
-  <div class="flex justify-center gap-8 pt-6">
-    <button
-      (click)="exportPDF()"
-      class="btn btn-primary px-8 py-3 text-lg shadow">
-      Exporter PDF
-    </button>
-
-    <button
-      (click)="exportExcel()"
-      class="btn btn-success px-8 py-3 text-lg shadow">
-      Exporter Excel
-    </button>
   </div>
 
 </div>

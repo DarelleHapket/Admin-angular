@@ -36,4 +36,24 @@ export class CourierListComponent implements OnInit {
       }
     });
   }
+
+  /** Obtenir les initiales du livreur */
+  getCourierInitials(courier: couriers): string {
+    if (!courier.name) return '??';
+    const names = courier.name.split(' ');
+    if (names.length >= 2) {
+      return (names[0][0] + names[1][0]).toUpperCase();
+    }
+    return courier.name.substring(0, 2).toUpperCase();
+  }
+
+  /** Nombre de livreurs actifs (mock) */
+  getActiveCount(): number {
+    return Math.min(this.couriers.length, Math.floor(this.couriers.length * 0.85));
+  }
+
+  /** Total livraisons effectuées (mock) */
+  getTotalDeliveries(): number {
+    return this.couriers.length * 42; // Mock: 42 livraisons par livreur en moyenne
+  }
 }

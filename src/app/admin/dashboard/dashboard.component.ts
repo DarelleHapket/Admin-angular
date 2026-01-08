@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardService } from './dashboard.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Chart } from 'chart.js/auto';
 
 @Component({
@@ -14,9 +14,12 @@ import { Chart } from 'chart.js/auto';
 export class DashboardComponent implements OnInit {
 
   // etat de chargement
-  // Au chargement du dashboard, on affiche “Chargement…”
-  // Quand les données sont prêtes, le dashboard s’affiche
+  // Au chargement du dashboard, on affiche "Chargement…"
+  // Quand les données sont prêtes, le dashboard s'affiche
   loading = true;
+
+  // Date actuelle pour l'affichage
+  currentDate = new Date();
 
   // statistiques
   totalOrders = 0;
@@ -46,15 +49,18 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
 
-    console.log('Dashboard chargé - LocalStorage:', {
-      isLoggedIn: localStorage.getItem('isLoggedIn'),
-      userEmail: localStorage.getItem('userEmail')
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      console.log('Dashboard chargé - LocalStorage:', {
+        isLoggedIn: localStorage.getItem('isLoggedIn'),
+        userEmail: localStorage.getItem('userEmail')
+      });
+    }
 
     // Récupération des statistiques depuis le service
     this.dashboardService.getStats().subscribe(stats => {
@@ -124,20 +130,133 @@ export class DashboardComponent implements OnInit {
           {
             label: 'Commandes',
             data: this.ordersData,
-            backgroundColor: 'rgba(59, 130, 246, 0.5)'
+            backgroundColor: (context: any) => {
+              const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 300);
+              gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
+              gradient.addColorStop(1, 'rgba(59, 130, 246, 0.3)');
+              return gradient;
+            },
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 2,
+            borderRadius: 8,
+            hoverBackgroundColor: 'rgba(59, 130, 246, 1)',
+            hoverBorderColor: 'rgb(37, 99, 235)',
+            hoverBorderWidth: 3
           },
           {
             label: 'Livraisons réussies',
             type: 'line',
             data: this.deliveriesData,
-            borderColor: 'rgb(34, 197, 94)',
-            tension: 0.4
+            borderColor: 'rgb(16, 185, 129)',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointBackgroundColor: 'rgb(16, 185, 129)',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointHoverBackgroundColor: 'rgb(5, 150, 105)',
+            pointHoverBorderColor: '#fff',
+            pointHoverBorderWidth: 3
           }
         ]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            align: 'end',
+            labels: {
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 20,
+              font: {
+                size: 13,
+                weight: 'bold',
+                family: "'Inter', system-ui, -apple-system, sans-serif"
+              },
+              color: '#374151'
+            }
+          },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(17, 24, 39, 0.95)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            borderColor: 'rgba(59, 130, 246, 0.5)',
+            borderWidth: 1,
+            padding: 12,
+            cornerRadius: 8,
+            displayColors: true,
+            usePointStyle: true,
+            titleFont: {
+              size: 14,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 13
+            },
+            callbacks: {
+              label: function(context: any) {
+                let label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                if (context.parsed.y !== null) {
+                  label += context.parsed.y.toLocaleString('fr-FR');
+                }
+                return label;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            border: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: 12
+              },
+              color: '#6b7280'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(107, 114, 128, 0.1)'
+            },
+            border: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: 12
+              },
+              color: '#6b7280',
+              callback: function(value: any) {
+                return value.toLocaleString('fr-FR');
+              }
+            }
+          }
+        },
+        animation: {
+          duration: 1500,
+          easing: 'easeInOutQuart'
+        }
       }
     });
   }

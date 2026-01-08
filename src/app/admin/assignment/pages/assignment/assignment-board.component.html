@@ -1,77 +1,155 @@
-<div class="assignment-container">
-  <h1 class="page-title">Assignation des commandes</h1>
+<div class="page-container">
 
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">
+        <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        Assignation des commandes
+      </h1>
+      <p class="page-subtitle">Assignez les commandes en attente à vos livreurs</p>
+    </div>
+  </div>
+
+  <!-- Stats rapides -->
+  <div class="quick-stats-grid">
+    <div class="stat-mini stat-mini-orange">
+      <div class="stat-mini-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <p class="stat-mini-value">{{ pendingOrders.length }}</p>
+        <p class="stat-mini-label">En attente</p>
+      </div>
+    </div>
+
+    <div class="stat-mini stat-mini-green">
+      <div class="stat-mini-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      </div>
+      <div>
+        <p class="stat-mini-value">{{ availableCouriers.length }}</p>
+        <p class="stat-mini-label">Livreurs actifs</p>
+      </div>
+    </div>
+
+    <div class="stat-mini stat-mini-blue">
+      <div class="stat-mini-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <p class="stat-mini-value">{{ getTodayAssignments() }}</p>
+        <p class="stat-mini-label">Assignées aujourd'hui</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid assignation -->
   <div class="assignment-grid">
 
     <!-- PANEL COMMANDES -->
     <div class="panel pending-panel">
-      <h2 class="panel-title">
-        Commandes en attente
-        <span class="badge">{{ pendingOrders.length }}</span>
-      </h2>
+      <div class="panel-header">
+        <h2 class="panel-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          Commandes en attente
+        </h2>
+        <span class="badge badge-orange">{{ pendingOrders.length }}</span>
+      </div>
 
       <!-- Chargement -->
-      <div class="loading" *ngIf="isLoading">
-        <p>Chargement...</p>
+      <div class="loading-state" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Chargement des commandes...</p>
       </div>
 
       <!-- Aucune commande -->
-      <div class="empty-state" *ngIf="!isLoading && pendingOrders.length === 0">
-        <p>Aucune commande à assigner pour le moment.</p>
+      <div class="empty-panel" *ngIf="!isLoading && pendingOrders.length === 0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p>Aucune commande à assigner</p>
+        <span>Toutes les commandes ont été assignées</span>
       </div>
 
       <!-- Liste des commandes -->
-      <div class="orders-list">
-        <div *ngFor="let order of pendingOrders" class="order-card">
+      <div class="orders-list" *ngIf="!isLoading">
+        <div *ngFor="let order of pendingOrders; let i = index"
+             class="order-card"
+             [style.animation-delay]="(i * 0.1) + 's'">
 
           <div class="order-header">
-            <strong>Commande #{{ order.id }}</strong>
-            <span class="client">
-              Client : {{ order.client || '—' }}
+            <div class="order-id">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+              #{{ order.id }}
+            </div>
+            <span class="status-badge status-pending">
+              {{ getStatusLabel(order.status) }}
             </span>
           </div>
 
-          <div class="order-details">
-            <p>
-              <strong>Date :</strong>
-              {{ order.created_at | date:'short' }}
-            </p>
+          <div class="order-info">
+            <div class="info-row">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span>{{ order.client || 'Client inconnu' }}</span>
+            </div>
 
-            <p>
-              <strong>Montant :</strong>
-              {{ order.total_amount | number:'1.0-0' }} FCFA
-            </p>
+            <div class="info-row">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
 
-            <p>
-              <strong>Statut :</strong>
-              <span class="status">
-                {{ getStatusLabel(order.status) }}
-              </span>
-            </p>
+            <div class="info-row info-amount">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="amount">{{ order.total_amount | number:'1.0-0' }} FCFA</span>
+            </div>
           </div>
 
           <!-- Assignation -->
           <div class="assign-section">
-            <select
-              [(ngModel)]="order.selectedCourierId"
-              class="courier-select"
-              required>
-              <option [ngValue]="null" disabled>
-                Choisir un livreur
-              </option>
-
-              <option
-                *ngFor="let courier of availableCouriers"
-                [ngValue]="courier.id">
-                {{ courier.name }}
-                <span *ngIf="courier.phone">({{ courier.phone }})</span>
-              </option>
-            </select>
+            <div class="select-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <select
+                [(ngModel)]="order.selectedCourierId"
+                class="courier-select">
+                <option [ngValue]="null" disabled>
+                  Sélectionner un livreur
+                </option>
+                <option
+                  *ngFor="let courier of availableCouriers"
+                  [ngValue]="courier.id">
+                  {{ courier.name }}
+                </option>
+              </select>
+            </div>
 
             <button
               class="assign-btn"
               [disabled]="!order.selectedCourierId"
               (click)="assign(order.id, order.selectedCourierId)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
               Assigner
             </button>
           </div>
@@ -82,18 +160,36 @@
 
     <!-- PANEL LIVREURS -->
     <div class="panel couriers-panel">
-      <h2 class="panel-title">
-        Livreurs disponibles
-        <span class="badge green">{{ availableCouriers.length }}</span>
-      </h2>
+      <div class="panel-header">
+        <h2 class="panel-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          Livreurs disponibles
+        </h2>
+        <span class="badge badge-green">{{ availableCouriers.length }}</span>
+      </div>
 
       <div class="couriers-list">
-        <div *ngFor="let courier of availableCouriers" class="courier-card">
-          <strong>{{ courier.name }}</strong>
-          <p class="email">{{ courier.email }}</p>
-          <p class="phone" *ngIf="courier.phone">
-            {{ courier.phone }}
-          </p>
+        <div *ngFor="let courier of availableCouriers; let i = index"
+             class="courier-card"
+             [style.animation-delay]="(i * 0.08) + 's'">
+          <div class="courier-avatar">
+            {{ getCourierInitials(courier) }}
+          </div>
+          <div class="courier-info">
+            <p class="courier-name">{{ courier.name }}</p>
+            <p class="courier-email">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              {{ courier.email }}
+            </p>
+            <div class="courier-status">
+              <span class="status-dot"></span>
+              Disponible
+            </div>
+          </div>
         </div>
       </div>
     </div>
